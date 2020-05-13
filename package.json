@@ -52,12 +52,16 @@
  },
  "dependencies": {
   "@cardfunc/model": "0.0.53",
+  "@types/dotenv": "^8.2.0",
   "authly": "0.0.39",
+  "dotenv": "^8.2.0",
+  "gracely": "0.0.31",
   "node-fetch": "^2.6.0"
  },
  "devDependencies": {
   "@types/jest": "^25.1.2",
   "@types/node": "^13.7.0",
+  "@types/node-fetch": "^2.5.7",
   "babel-core": "^6.26.3",
   "babel-jest": "^25.1.0",
   "jest": "^25",
