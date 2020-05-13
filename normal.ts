@@ -1,11 +1,11 @@
-import { default as fetch } from "node-fetch"
-import { FormData } from "@types/node-fetch"
 import * as gracely from "gracely"
 import * as cardfunc from "@cardfunc/model"
 import { Connection } from "./Connection"
+import * as Authorization from "./Authorization"
 
 export async function test(connection: Connection): Promise<boolean> {
-	const request: cardfunc.Authorization.Creatable = {
+	let result: boolean
+	const creatable: cardfunc.Authorization.Creatable = {
 		amount: 13.37,
 		currency: "SEK",
 		card: {
@@ -14,21 +14,12 @@ export async function test(connection: Connection): Promise<boolean> {
 			csc: "987",
 		},
 	}
-	const error = await connection.post<cardfunc.Authorization>("public", "authorization", request)
-	if (isParesError(error)) {
-		const data = new FormData()
-		data.set("pareq", error.content.pareq)
-		const response = await fetch(error.content.url, { body: data })
-		console.log(error)
+	const token = await Authorization.create(connection, creatable)
+	if (!(result = gracely.Error.is(token))) {
+		const authorisation = await cardfunc.Authorization.verify(token) || undefined
+		const capture = await Authorization.capture(connection, token)
+		const refund = await Authorization.refund(connection, token)
+		result = !!authorisation && !gracely.Error.is(capture) && !gracely.Error.is(refund) && authorisation.amount == capture.amount && authorisation.amount == refund.amount
 	}
-	return true
-}
-
-function isParesError(value: any): value is gracely.Error & { status: 400, type: "missing property", content: { property: "pares", type: "string", url: string, pareq: string } } {
-	return gracely.client.missingProperty.is(value) &&
-		typeof value.content == "object" &&
-		value.content.property == "pares" &&
-		value.content.type == "string" &&
-		typeof value.content.url == "string" &&
-		typeof value.content.pareq == "string"
+	return result
 }

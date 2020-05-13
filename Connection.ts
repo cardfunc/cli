@@ -13,15 +13,13 @@ export class Connection {
 		init = {
 			...init,
 			headers: {
+				"content-type": "application/json; charset=utf-8",
+				accept: "application/json; charset=utf-8",
+				authorization: authentication == "admin" ? `Basic ${ authly.Base64.encode(this.keys.admin.user + ":" + this.keys.admin.password, "url") }` : `Bearer ${ this.keys[authentication] }`,
 				...init.headers,
-				"Content-Type": "application/json; charset=utf-8",
-				Accept: "application/json; charset=utf-8",
-				Authorization: authentication == "admin" ? `Basic ${ authly.Base64.encode(this.keys.admin.user + ":" + this.keys.admin.password, "url") }` : `Bearer ${ this.keys[authentication] }`,
 			},
 		}
-		console.log(url, init)
 		const response = await fetch(url, init)
-		console.log(response)
 		return response.headers.get("Content-Type") == "application/json; charset=utf-8" ? await response.json() as T | gracely.Error : { status: response.status, type: "unknown" }
 	}
 	get<T>(authentication: "private" | "public" | "admin", resource: string): Promise<T | gracely.Error> {
@@ -32,6 +30,9 @@ export class Connection {
 	}
 	post<T>(authentication: "private" | "public" | "admin", resource: string, body: any): Promise<T | gracely.Error> {
 		return this.fetch<T>(authentication, resource, { method: "POST" }, body)
+	}
+	postToken(authentication: "private" | "public" | "admin", resource: string, body: any): Promise<authly.Token | gracely.Error> {
+		return this.fetch<authly.Token>(authentication, resource, { method: "POST", headers: { accept: "application/jwt; charset=utf-8" } }, body)
 	}
 	patch<T>(authentication: "private" | "public" | "admin", resource: string, body: any): Promise<T | gracely.Error> {
 		return this.fetch<T>(authentication, resource, { method: "PATCH" }, body)
