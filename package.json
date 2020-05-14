@@ -1,18 +1,21 @@
 {
- "name": "@cardfunc/backend-tester",
+ "name": "@cardfunc/cli",
  "version": "0.0.0",
- "description": "Tester for the CardFunc Backend.",
+ "description": "CardFunc command line interface.",
  "author": "CardFunc",
  "license": "MIT",
  "repository": {
   "type": "git",
-  "url": "git+https://github.com/cardfunc/backend-tester"
+  "url": "git+https://github.com/cardfunc/cli"
  },
  "bugs": {
-  "url": "https://github.com/cardfunc/backend-tester/issues"
+  "url": "https://github.com/cardfunc/cli/issues"
  },
- "homepage": "https://github.com/cardfunc/backend-tester#readme",
+ "homepage": "https://github.com/cardfunc/cli#readme",
  "private": false,
+ "bin": {
+  "typeup": "dist/index.js"
+ },
  "main": "dist/index.js",
  "typings": "dist/index.d.ts",
  "git": {
@@ -51,17 +54,20 @@
   "clean": "rm -rf dist node_modules coverage"
  },
  "dependencies": {
-  "@cardfunc/model": "0.0.53",
+  "@cardfunc/model": "cardfunc/model#fixes",
   "@types/dotenv": "^8.2.0",
   "authly": "0.0.39",
   "dotenv": "^8.2.0",
   "gracely": "0.0.31",
-  "node-fetch": "^2.6.0"
+  "isoly": "0.0.13",
+  "node-fetch": "^2.6.0",
+  "node-persist": "^3.0.5"
  },
  "devDependencies": {
   "@types/jest": "^25.1.2",
   "@types/node": "^13.7.0",
   "@types/node-fetch": "^2.5.7",
+  "@types/node-persist": "^3.0.0",
   "babel-core": "^6.26.3",
   "babel-jest": "^25.1.0",
   "jest": "^25",

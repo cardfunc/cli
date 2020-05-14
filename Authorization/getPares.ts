@@ -1,5 +1,4 @@
 import * as gracely from "gracely"
-import * as cardfunc from "@cardfunc/model"
 import * as utility from "../utility"
 
 function isParesError(value: any): value is gracely.Error & { status: 400, type: "missing property", content: { property: "pares", type: "string", url: string, pareq: string } } {
@@ -11,6 +10,7 @@ function isParesError(value: any): value is gracely.Error & { status: 400, type:
 		typeof value.content.pareq == "string"
 }
 
-export async function getPares(error: cardfunc.Authorization | gracely.Error): Promise<{ [field: string]: string }> {
-	return isParesError(error) ? utility.postForm(error.content.url, { TermUrl: "http://localhost", PaReq: error.content.pareq, MD: "data" }) : {}
+export async function getPares(error: gracely.Error): Promise<{ [field: string]: string }> {
+	const dialog3d = isParesError(error) ? await utility.postForm(error.content.url, { TermUrl: "http://localhost", PaReq: error.content.pareq, MD: "data"}) : {}
+	return isParesError(error) ? utility.postForm(error.content.url, { ...dialog3d, Authenticated: "authenticated", MD: "" }) : {}
 }

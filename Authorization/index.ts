@@ -5,6 +5,8 @@ import { getPares } from "./getPares"
 import { post } from "./post"
 import { refund } from "./refund"
 
+import "./Module"
+
 export {
 	cancel,
 	capture,

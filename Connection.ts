@@ -1,10 +1,10 @@
 import { default as fetch, RequestInit } from "node-fetch"
 import * as authly from "authly"
 import * as gracely from "gracely"
-import { Authentication } from "./Authentication"
+import { Merchant } from "./Merchant"
 
 export class Connection {
-	constructor(readonly keys: Authentication, readonly url: string) {
+	constructor(readonly merchant: Merchant, readonly url: string) {
 	}
 	private async fetch<T>(authentication: "private" | "public" | "admin", resource: string, init: RequestInit, body?: any): Promise<T | gracely.Error> {
 		const url = this.url + "/" + resource
@@ -15,12 +15,24 @@ export class Connection {
 			headers: {
 				"content-type": "application/json; charset=utf-8",
 				accept: "application/json; charset=utf-8",
-				authorization: authentication == "admin" ? `Basic ${ authly.Base64.encode(this.keys.admin.user + ":" + this.keys.admin.password, "url") }` : `Bearer ${ this.keys[authentication] }`,
+				authorization: authentication == "admin" ? `Basic ${ authly.Base64.encode(this.merchant.administrator?.user + ":" + this.merchant.administrator?.password, "url") }` : `Bearer ${ this.merchant.keys[authentication] }`,
 				...init.headers,
 			},
 		}
 		const response = await fetch(url, init)
-		return response.headers.get("Content-Type") == "application/json; charset=utf-8" ? await response.json() as T | gracely.Error : { status: response.status, type: "unknown" }
+		let result: T | gracely.Error
+		switch (response.headers.get("Content-Type")) {
+			case "application/json; charset=utf-8":
+				result = await response.json() as T
+				break
+			case "application/jwt; charset=utf-8":
+				result = await response.text() as any as T
+				break
+			default:
+				result = { status: response.status, type: "unknown" }
+				break
+		}
+		return result
 	}
 	get<T>(authentication: "private" | "public" | "admin", resource: string): Promise<T | gracely.Error> {
 		return this.fetch<T>(authentication, resource, { method: "GET" })
@@ -43,8 +55,8 @@ export class Connection {
 	options<T>(authentication: "private" | "public" | "admin", resource: string): Promise<T | gracely.Error> {
 		return this.fetch(authentication, resource, { method: "OPTIONS" })
 	}
-	static async create(keys: Authentication): Promise<Connection | undefined> {
-		const merchant = await authly.Verifier.create("public")?.verify(keys.public)
-		return merchant && merchant.iss ? new Connection(keys, merchant.iss) : undefined
+	static async create(merchant: Merchant): Promise<Connection | undefined> {
+		const m = await authly.Verifier.create("public")?.verify(merchant.keys.public)
+		return m && m.iss ? new Connection(merchant, m.iss) : undefined
 	}
 }

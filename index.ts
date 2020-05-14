@@ -1,17 +1,15 @@
-import * as dotenv from "dotenv"
-dotenv.config()
-import { Connection } from "./Connection"
-import * as normal from "./normal"
+import { Module } from "./Module"
 
-async function run(argument: string[]): Promise<number> {
-	console.log("test")
-	const connection = await Connection.create({
-		private: argument[2] || process.env.privateKey!,
-		public: argument[3] || process.env.publicKey!,
-		admin: { user: argument[4] || process.env.adminUser!, password: argument[5] || process.env.adminPassword! }
-	})
-	const result = connection && await normal.test(connection) ? 0 : 1
-	console.log("done")
+import "./Authorization"
+import "./Merchant"
+import "./Test"
+
+async function run(argument: string[]): Promise<boolean> {
+	argument = argument.slice(2)
+	const module = argument.shift()
+	const command = argument.shift()
+	const result = await Module.execute(module ?? "_", command ?? "_", argument, {})
+	console.log(result ? "succeeded" : "failed")
 	return result
 }
-run(process.argv).then(result => process.exit(result), _ => process.exit(1))
+run(process.argv).then(result => process.exit(result ? 0 : 1), _ => process.exit(1))
