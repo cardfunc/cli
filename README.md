@@ -1,2 +1,2 @@
-# backend-tester
-Tester for the CardFunc Backend.
+# CardFunc CLI
+Command line interface for CardFunc.
