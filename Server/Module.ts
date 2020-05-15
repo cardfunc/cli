@@ -8,6 +8,6 @@ export function addCommand(command: Command) {
 }
 
 Module.register({
-	name: "merchant",
+	name: "server",
 	commands,
-}, "merchant", "m")
+}, "server", "s")

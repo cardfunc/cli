@@ -1,10 +1,10 @@
 import { default as fetch, RequestInit } from "node-fetch"
 import * as authly from "authly"
 import * as gracely from "gracely"
-import * as Merchant from "./Merchant/Data"
+import * as Server from "./Server/Credentials"
 
 export class Connection {
-	constructor(readonly merchant: Merchant.Data, readonly url: string) {
+	constructor(readonly merchant: Server.Credentials, readonly url: string) {
 	}
 	private async fetch<T>(authentication: "private" | "public" | "admin", resource: string, init: RequestInit, body?: any): Promise<T | gracely.Error> {
 		const url = this.url + "/" + resource
@@ -55,10 +55,10 @@ export class Connection {
 	options<T>(authentication: "private" | "public" | "admin", resource: string): Promise<T | gracely.Error> {
 		return this.fetch(authentication, resource, { method: "OPTIONS" })
 	}
-	static async create(merchant?: string | Merchant.Data): Promise<Connection | undefined> {
-		if (typeof merchant == "string")
-			merchant = await Merchant.Data.load(merchant)
-		const m = merchant && await authly.Verifier.create("public")?.verify(merchant.keys.public)
-		return merchant && m && m.iss ? new Connection(merchant, m.iss) : undefined
+	static async create(server?: string | Server.Credentials): Promise<Connection | undefined> {
+		if (typeof server == "string")
+			server = await Server.Credentials.load(server)
+		const m = server && await authly.Verifier.create("public")?.verify(server.keys.public)
+		return server && m && m.iss ? new Connection(server, m.iss) : undefined
 	}
 }

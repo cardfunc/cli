@@ -3,7 +3,7 @@ dotenv.config()
 import { Module } from "./Module"
 
 import "./Authorization"
-import "./Merchant"
+import "./Server"
 import "./Test"
 
 async function run(argument: string[]): Promise<boolean> {

@@ -1,12 +1,12 @@
 import { addCommand } from "./Module"
 import * as authly from "authly"
-import { Data } from "./Data"
+import { Credentials } from "./Credentials"
 
 export async function add(name: string, privateKey: authly.Token, publicKey: authly.Token, user?: string, password?: string): Promise<boolean> {
-	const merchant: Data = { name, keys: { private: privateKey, public: publicKey } }
+	const merchant: Credentials = { name, keys: { private: privateKey, public: publicKey } }
 	if (user && password)
 		merchant.administrator = { user, password }
-	return Data.save(merchant)
+	return Credentials.save(merchant)
 }
 
 addCommand({

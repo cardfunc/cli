@@ -32,9 +32,47 @@
 			"request": "launch",
 			"name": "test",
 			"args": [
+				"--server",
 				"test",
-				"-m",
 				"test"
+			],
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}/dist/index.js",
+			"preLaunchTask": "tsc: build - tsconfig.json",
+			"outFiles": [
+				"${workspaceFolder}/dist/**/*.js"
+			]
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "help",
+			"args": [
+				"help",
+				"--server",
+				"test",
+				"server"
+			],
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}/dist/index.js",
+			"preLaunchTask": "tsc: build - tsconfig.json",
+			"outFiles": [
+				"${workspaceFolder}/dist/**/*.js"
+			]
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "server list",
+			"args": [
+				"server",
+				"--server",
+				"test",
+				"list"
 			],
 			"skipFiles": [
 				"<node_internals>/**"

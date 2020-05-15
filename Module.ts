@@ -7,7 +7,7 @@ export interface Module {
 	readonly commands: { [command: string]: Command | undefined }
 }
 export namespace Module {
-	const flags: { [name: string]: number } = { m: 1, merchant: 1 }
+	const flags: { [name: string]: number } = { s: 1, server: 1 }
 	const modules: { [name: string]: Module } = {}
 	export async function execute(argument: string[]): Promise<boolean> {
 		const a: string[] = []
@@ -21,7 +21,7 @@ export namespace Module {
 			} else
 				a.push(item)
 		}
-		const connection = await Connection.create((f.m ?? f.merchant)?.[0] ?? "env")
+		const connection = await Connection.create((f.s ?? f.server)?.[0] ?? "env")
 		const module = a.shift() ?? "_"
 		const command = a.shift() ?? "_"
 		return connection && (modules[module]?.commands[command] ? modules[module]?.commands[command]?.execute(connection, a, f) : modules[module]?.commands._?.execute(connection, [command, ...a], f)) || false
