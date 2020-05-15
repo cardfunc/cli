@@ -18,11 +18,11 @@ addCommand({
 				csc: "987",
 			},
 		}
-		const token = await Authorization.create(connection, creatable)
+		const token = connection && await Authorization.create(connection, creatable)
 		if (!(result = gracely.Error.is(token))) {
-			const a = await cardfunc.Authorization.verify(token) || undefined
-			const c = await Authorization.capture(connection, token)
-			const r = await Authorization.refund(connection, token)
+			const a = token && await cardfunc.Authorization.verify(token) || undefined
+			const c = connection && token && await Authorization.capture(connection, token)
+			const r = connection && token && await Authorization.refund(connection, token)
 			result = cardfunc.Authorization.is(a) && cardfunc.Capture.is(c) && cardfunc.Refund.is(r) && creatable.amount == a.amount && creatable.amount == c.amount && creatable.amount == r.amount
 		}
 		return result

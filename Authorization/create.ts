@@ -19,7 +19,8 @@ addCommand({
 		const amount = Number.parseFloat(argument[0])
 		const currency = argument[1]
 		const expires = argument[3].split("/", 2).map(e => Number.parseInt(e))
-		const result = isoly.Currency.is(currency) &&
+		const result = connection &&
+			isoly.Currency.is(currency) &&
 			cardfunc.Card.Expires.is(expires) &&
 			await create(connection, {
 				amount, currency,
