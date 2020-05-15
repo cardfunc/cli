@@ -10,7 +10,7 @@ export namespace Module {
 	const flags: { [name: string]: number } = { s: 1, server: 1 }
 	const modules: { [name: string]: Module } = {}
 	export async function execute(argument: string[]): Promise<boolean> {
-		const a: string[] = []
+		let a: string[] = []
 		const f: { [flag: string]: string[] } = {}
 		let item: string | undefined
 		while (item = argument.shift()) {
@@ -22,9 +22,14 @@ export namespace Module {
 				a.push(item)
 		}
 		const connection = await Connection.create((f.s ?? f.server)?.[0] ?? "env")
-		const module = a.shift() ?? "_"
-		const command = a.shift() ?? "_"
-		return connection && (modules[module]?.commands[command] ? modules[module]?.commands[command]?.execute(connection, a, f) : modules[module]?.commands._?.execute(connection, [command, ...a], f)) || false
+		const module = modules[a.shift() ?? "?"] ?? modules["?"]
+		const commandName = a.shift()
+		let command = module.commands[commandName ?? "_"]
+		if (!command) {
+			command = module.commands._
+			a = commandName ? [commandName, ...a] : a
+		}
+		return command?.execute(connection, a, f) || false
 	}
 	export function register(module: Module, ...names: string[]): void {
 		names.forEach(name => modules[name] = module)
