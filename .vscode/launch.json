@@ -32,6 +32,8 @@
 			"request": "launch",
 			"name": "test",
 			"args": [
+				"test",
+				"-m",
 				"test"
 			],
 			"skipFiles": [

@@ -1,3 +1,5 @@
+import * as dotenv from "dotenv"
+dotenv.config()
 import { Module } from "./Module"
 
 import "./Authorization"
@@ -5,10 +7,7 @@ import "./Merchant"
 import "./Test"
 
 async function run(argument: string[]): Promise<boolean> {
-	argument = argument.slice(2)
-	const module = argument.shift()
-	const command = argument.shift()
-	const result = await Module.execute(module ?? "_", command ?? "_", argument, {})
+	const result = await Module.execute(argument.slice(2))
 	console.log(result ? "succeeded" : "failed")
 	return result
 }

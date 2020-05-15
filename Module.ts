@@ -1,6 +1,3 @@
-import * as dotenv from "dotenv"
-dotenv.config()
-import * as authly from "authly"
 import { Command } from "./Command"
 import { Connection } from "./Connection"
 import * as configuration from "./package.json"
@@ -10,22 +7,29 @@ export interface Module {
 	readonly commands: { [command: string]: Command | undefined }
 }
 export namespace Module {
+	const flags: { [name: string]: number } = { m: 1, merchant: 1 }
 	const modules: { [name: string]: Module } = {}
-	export async function execute(module: string, command: string, argument: string[], flags: { [flag: string]: string }): Promise<boolean> {
-		const connection = await Connection.create({
-			name: "env",
-			keys: {
-				private: process.env.privateKey as authly.Token,
-				public: process.env.publicKey as authly.Token,
-			},
-			administrator: { user: process.env.adminUser!, password: process.env.adminPassword! },
-		})
-		return connection && (modules[module]?.commands[command] ? modules[module]?.commands[command]?.execute(connection, argument, flags) : modules[module]?.commands._?.execute(connection, [command, ...argument], flags)) || false
+	export async function execute(argument: string[]): Promise<boolean> {
+		const a: string[] = []
+		const f: { [flag: string]: string[] } = {}
+		let item: string | undefined
+		while (item = argument.shift()) {
+			if (item.startsWith("-")) {
+				while (item.startsWith("-"))
+					item = item.slice(1)
+				f[item] = argument.splice(0, flags[item])
+			} else
+				a.push(item)
+		}
+		const connection = await Connection.create((f.m ?? f.merchant)?.[0] ?? "env")
+		const module = a.shift() ?? "_"
+		const command = a.shift() ?? "_"
+		return connection && (modules[module]?.commands[command] ? modules[module]?.commands[command]?.execute(connection, a, f) : modules[module]?.commands._?.execute(connection, [command, ...a], f)) || false
 	}
 	export function register(module: Module, ...names: string[]): void {
 		names.forEach(name => modules[name] = module)
 	}
-	Module.register({
+	register({
 		name: "help",
 		commands: {
 			_: {
@@ -36,7 +40,7 @@ export namespace Module {
 					["<module>", "Shows help for specific module."],
 					["<module> <command>", "Shows help for specific command."],
 				],
-				execute: async (connection, argument, flags) => {
+				execute: async (connection, argument, _) => {
 					const module = argument.length > 0 && modules[argument[0]]
 					const command = module && argument.length > 1 && module.commands[argument[1]]
 					console.log("\nCardFunc CLI\n")
@@ -51,14 +55,14 @@ export namespace Module {
 			},
 		}
 	}, "help", "h", "?")
-	Module.register({
+	register({
 		name: "version",
 		commands: {
 			_: {
 				name: "_",
 				description: "Show version.",
 				examples: [],
-				execute: async (connection, argument, flags) => {
+				execute: async (connection, argument, _) => {
 					console.log("CardFunc CLI\nversion: " + configuration.version + "\n")
 					return true
 				},
