@@ -14,7 +14,7 @@
  "homepage": "https://github.com/cardfunc/cli#readme",
  "private": false,
  "bin": {
-  "typeup": "dist/index.js"
+  "cardfunc": "dist/index.js"
  },
  "main": "dist/index.js",
  "typings": "dist/index.d.ts",
