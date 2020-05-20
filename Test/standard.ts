@@ -19,7 +19,7 @@ addCommand({
 			},
 		}
 		const token = connection && await Authorization.create(connection, creatable)
-		if (!(result = gracely.Error.is(token))) {
+		if (result = !gracely.Error.is(token)) {
 			const a = token && await cardfunc.Authorization.verify(token) || undefined
 			const c = connection && token && await Authorization.capture(connection, token)
 			const r = connection && token && await Authorization.refund(connection, token)

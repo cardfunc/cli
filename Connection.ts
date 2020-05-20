@@ -19,18 +19,22 @@ export class Connection {
 				...init.headers,
 			},
 		}
-		const response = await fetch(url, init)
 		let result: T | gracely.Error
-		switch (response.headers.get("Content-Type")) {
-			case "application/json; charset=utf-8":
-				result = await response.json() as T
-				break
-			case "application/jwt; charset=utf-8":
-				result = await response.text() as any as T
-				break
-			default:
-				result = { status: response.status, type: "unknown" }
-				break
+		try {
+			const response = await fetch(url, init)
+			switch (response.headers.get("Content-Type")) {
+				case "application/json; charset=utf-8":
+					result = await response.json() as T
+					break
+				case "application/jwt; charset=utf-8":
+					result = await response.text() as any as T
+					break
+				default:
+					result = { status: response.status, type: "unknown" }
+					break
+			}
+		} catch (error) {
+			result = gracely.client.notFound()
 		}
 		return result
 	}
