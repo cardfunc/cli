@@ -4,12 +4,12 @@ import { addCommand } from "./Module"
 import * as gracely from "gracely"
 import * as authly from "authly"
 import { Connection } from "../Connection"
-import { getPares } from "./getPares"
+import { getPares, isParesError } from "./getPares"
 import { post } from "./post"
 
 export async function create(connection: Connection, authorization: cardfunc.Authorization.Creatable): Promise<authly.Token | gracely.Error> {
 	const error = await post(connection, authorization)
-	return gracely.Error.is(error) ? post(connection, { ...authorization, pares: (await getPares(error)).PaRes }) : error
+	return isParesError(error) ? post(connection, { ...authorization, pares: (await getPares(error)).PaRes }) : error
 }
 addCommand({
 	name: "create",

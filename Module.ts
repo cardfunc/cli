@@ -29,7 +29,7 @@ export namespace Module {
 			command = module.commands._
 			a = commandName ? [commandName, ...a] : a
 		}
-		return command?.execute(connection, a, f) || false
+		return await command?.execute(connection, a, f) || false
 	}
 	export function register(module: Module, ...names: string[]): void {
 		names.forEach(name => modules[name] = module)

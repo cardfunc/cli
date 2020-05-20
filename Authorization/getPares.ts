@@ -1,7 +1,7 @@
 import * as gracely from "gracely"
 import * as utility from "../utility"
 
-function isParesError(value: any): value is gracely.Error & { status: 400, type: "missing property", content: { property: "pares", type: "string", url: string, pareq: string } } {
+export function isParesError(value: any): value is gracely.Error & { status: 400, type: "missing property", content: { property: "pares", type: "string", url: string, pareq: string } } {
 	return gracely.client.missingProperty.is(value) &&
 		typeof value.content == "object" &&
 		value.content.property == "pares" &&
