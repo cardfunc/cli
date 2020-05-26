@@ -14,7 +14,10 @@ export async function create(connection: Connection, authorization: cardfunc.Aut
 addCommand({
 	name: "create",
 	description: "Creates a new authorization.",
-	examples: [],
+	examples: [
+		["13.37 EUR 4111111111111111 2/22 987", "Create an authorization for EUR 13.37."],
+		["13.37 EUR 4111111111111111 2/22 987 <pares>", "Create an authorization for EUR 13.37 with 3D Secure."]
+	],
 	execute: async (connection, argument, flags) => {
 		const amount = Number.parseFloat(argument[0])
 		const currency = argument[1]
@@ -29,8 +32,8 @@ addCommand({
 					expires,
 					csc: argument[4],
 				},
-				descriptor: argument[5],
-				pares: argument[6]
+				pares: argument[5],
+				descriptor: argument[6]
 			})
 		console.info(typeof result == "string" ? result : JSON.stringify(result, undefined, "\t"))
 		return !!(typeof result == "string" && cardfunc.Authorization.verify(result))
