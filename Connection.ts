@@ -59,10 +59,10 @@ export class Connection {
 	options<T>(authentication: "private" | "public" | "admin", resource: string): Promise<T | gracely.Error> {
 		return this.fetch(authentication, resource, { method: "OPTIONS" })
 	}
-	static async create(server?: string | Server.Credentials): Promise<Connection | undefined> {
+	static async create(server?: string | Server.Credentials, url?: string): Promise<Connection | undefined> {
 		if (typeof server == "string")
 			server = await Server.Credentials.load(server)
 		const m = server && await authly.Verifier.create("public")?.verify(server.keys.public)
-		return server && m && m.iss ? new Connection(server, m.iss) : undefined
+		return server && m && m.iss ? new Connection(server, url ?? m.iss) : undefined
 	}
 }

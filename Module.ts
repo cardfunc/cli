@@ -7,7 +7,7 @@ export interface Module {
 	readonly commands: { [command: string]: Command | undefined }
 }
 export namespace Module {
-	const flags: { [name: string]: number } = { s: 1, server: 1 }
+	const flags: { [name: string]: number } = { s: 1, server: 1, u: 1, url: 1 }
 	const modules: { [name: string]: Module } = {}
 	export async function execute(argument: string[]): Promise<boolean> {
 		let a: string[] = []
@@ -21,7 +21,7 @@ export namespace Module {
 			} else
 				a.push(item)
 		}
-		const connection = await Connection.create((f.s ?? f.server)?.[0] ?? "env")
+		const connection = await Connection.create((f.s ?? f.server)?.[0] ?? "default", (f.u ?? f.url)?.[0])
 		const module = modules[a.shift() ?? "?"] ?? modules["?"]
 		const commandName = a.shift()
 		let command = module.commands[commandName ?? "_"]
