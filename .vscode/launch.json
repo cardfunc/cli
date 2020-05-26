@@ -4,6 +4,7 @@
 	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 	"version": "0.2.0",
 	"configurations": [
+	
 		{
 			"type": "node",
 			"request": "launch",
@@ -22,7 +23,7 @@
 				"<node_internals>/**"
 			],
 			"program": "${workspaceFolder}/dist/index.js",
-			"preLaunchTask": "tsc: build - tsconfig.json",
+			"preLaunchTask": "build",
 			"outFiles": [
 				"${workspaceFolder}/dist/**/*.js"
 			]
@@ -33,14 +34,16 @@
 			"name": "test",
 			"args": [
 				"--server",
-				"test",
+				"cloud",
+				"--url",
+				"https://cardfuncleft.azurewebsites.net",
 				"test"
 			],
 			"skipFiles": [
 				"<node_internals>/**"
 			],
 			"program": "${workspaceFolder}/dist/index.js",
-			"preLaunchTask": "tsc: build - tsconfig.json",
+			"preLaunchTask": "build",
 			"outFiles": [
 				"${workspaceFolder}/dist/**/*.js"
 			]
@@ -59,7 +62,7 @@
 				"<node_internals>/**"
 			],
 			"program": "${workspaceFolder}/dist/index.js",
-			"preLaunchTask": "tsc: build - tsconfig.json",
+			"preLaunchTask": "build",
 			"outFiles": [
 				"${workspaceFolder}/dist/**/*.js"
 			]
@@ -78,7 +81,7 @@
 				"<node_internals>/**"
 			],
 			"program": "${workspaceFolder}/dist/index.js",
-			"preLaunchTask": "tsc: build - tsconfig.json",
+			"preLaunchTask": "build",
 			"outFiles": [
 				"${workspaceFolder}/dist/**/*.js"
 			]
