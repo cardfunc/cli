@@ -10,7 +10,7 @@ addCommand({
 	name: "capture",
 	description: "Adds a new capture.",
 	examples: [
-		["<authentication> <amount>", "Captures authorizations."],
+		["<authorization> <amount>", "Captures authorizations."],
 	],
 	execute: async (connection, argument, flags) => {
 		const amount = Number.parseFloat(argument[1])
