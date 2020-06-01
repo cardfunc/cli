@@ -50,6 +50,25 @@
 		{
 			"type": "node",
 			"request": "launch",
+			"name": "authorization refund",
+			"args": [
+				"authorization",
+				"refund",
+				"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJDYXJkRnVuYyIsImlhdCI6MTU5MTAzMjA4MjEyNCwiYXVkIjoicHJvZHVjdGlvbiIsImlkIjoiU3BuUzFrLXN4eWRsIiwicmVmZXJlbmNlIjoiMGNjZTQ0NmQtZGM1YS00NThjLWFkNDgtYjE1ZmI3MGJkOWUxIiwiZGVzY3JpcHRvciI6ImRlc2NyaXB0aW9uIiwiY3JlYXRlZCI6IjIwMjAtMDYtMDFUMTc6MjE6MjErMDA6MDAiLCJhbW91bnQiOjQyLCJjdXJyZW5jeSI6IlNFSyIsImNhcmQiOnsiaWQiOiJyQlJQSDhWNyIsInNjaGVtZSI6InZpc2EiLCJpaW4iOiI0MTExMTEiLCJsYXN0NCI6IjExMTEiLCJleHBpcmVzIjpbMiwyMl19LCJjYXB0dXJlIjpbXSwicmVmdW5kIjpbXX0.Kz8s5LfONy-xc4lnEzq5rbdlF_KPUHz1FgPaSo4xzOI7BO6STZDRpjfIpSylyJ4zhH-PvUsUvcqJ7jmyRDDX5P0_2ZsBXb3xG-tD_rBomi9698v3KEhkId3Be6IJLbMHpHsxZZp5x6bBvQMpbPvzNoxHymWO6Ym9Ssa_IQHYuPa14VM_e8hXCB7-DpDIZC5ThrJM6fXtJ3OrGQzRgV9HWKH9kpoic2jvzy_orMyAdPBkKKeUXM23L1UglIZwtGrB2N4BdS6sDmnR0anTKZmasG2__YRNBkWTNgWpH12rSiahOCWAN7gbKGnr5cx4NC9KGhdHIeHUteNvHKFznm91HA",
+				"42"
+			],
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}/dist/index.js",
+			"preLaunchTask": "build",
+			"outFiles": [
+				"${workspaceFolder}/dist/**/*.js"
+			]
+		},
+		{
+			"type": "node",
+			"request": "launch",
 			"name": "authorization cancel",
 			"args": [
 				"authorization",

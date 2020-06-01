@@ -8,9 +8,9 @@ export function cancel(connection: Connection, authorization: string): Promise<c
 }
 addCommand({
 	name: "cancel",
-	description: "Cancels authorizations.",
+	description: "Cancels authorization.",
 	examples: [
-		["<authorization>", "Cancels authorizations."],
+		["<authorization>", "Cancels authorization."],
 	],
 	execute: async (connection, argument, flags) => {
 		const result = connection &&
