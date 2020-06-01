@@ -8,7 +8,7 @@ export function capture(connection: Connection, authorization: string, amount?: 
 }
 addCommand({
 	name: "capture",
-	description: "Adds a new capture.",
+	description: "Captures authorizations.",
 	examples: [
 		["<authorization> <amount>", "Captures authorizations."],
 	],
