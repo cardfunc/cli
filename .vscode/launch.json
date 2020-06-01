@@ -50,6 +50,24 @@
 		{
 			"type": "node",
 			"request": "launch",
+			"name": "authorization cancel",
+			"args": [
+				"authorization",
+				"cancel",
+				"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJDYXJkRnVuYyIsImlhdCI6MTU5MTAzMTI4MDI1NSwiYXVkIjoicHJvZHVjdGlvbiIsImlkIjoiU1JkM0I3cUJ1dEpJIiwicmVmZXJlbmNlIjoiNWQxOGViNjgtZDA4Ny00NzZmLWJhMmUtZDRmN2MxZTcyODI2IiwiZGVzY3JpcHRvciI6ImRlc2NyaXB0aW9uIiwiY3JlYXRlZCI6IjIwMjAtMDYtMDFUMTc6MDc6NTkrMDA6MDAiLCJhbW91bnQiOjQyLCJjdXJyZW5jeSI6IlNFSyIsImNhcmQiOnsiaWQiOiI0QTVhaGlHQiIsInNjaGVtZSI6InZpc2EiLCJpaW4iOiI0MTExMTEiLCJsYXN0NCI6IjExMTEiLCJleHBpcmVzIjpbMiwyMl19LCJjYXB0dXJlIjpbXSwicmVmdW5kIjpbXX0.DXKj0Fzv6ILvOBdmdWJ0z2W1PB0hIfVxbGc9BbIiZP2ejoHUrImZad4BmMmCyMO_aFNAiNWHRQbI8YEWC9R5HkbyXvIiLLY_W7leVtyXS9-G8TVIX9NXLg10cfzAMwlwPXj1FCYF0gKWeEn-rEfCy2taam6oOGcsa_h0K4E_GdLqNZS1fKiNU-V1Qo4Vx4-w5h8mVZgVHUXPLkJTYp0QtJkYyzHzbJ8NqaqJY9Hv6tn1-5niluF0lmodlaTZvloKCUEShF4MO31l04AnPQWdLyQqniMDTYc7PUq3DqA9cIzzyQ65W2u5F4UBWdWsD_6UU9cGPxWNs5JvtXxGQsrtyQ",
+			],
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}/dist/index.js",
+			"preLaunchTask": "build",
+			"outFiles": [
+				"${workspaceFolder}/dist/**/*.js"
+			]
+		},
+		{
+			"type": "node",
+			"request": "launch",
 			"name": "test",
 			"args": [
 				"test"
