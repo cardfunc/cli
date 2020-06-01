@@ -8,9 +8,9 @@ export function capture(connection: Connection, authorization: string, amount?: 
 }
 addCommand({
 	name: "capture",
-	description: "Captures authorizations.",
+	description: "Captures authorization.",
 	examples: [
-		["<authorization> <amount>", "Captures authorizations."],
+		["<authorization> <amount>", "Captures authorization."],
 	],
 	execute: async (connection, argument, flags) => {
 		const amount = Number.parseFloat(argument[1])
