@@ -5,7 +5,7 @@ import { addCommand } from "./Module"
 
 addCommand({
 	name: "input",
-	description: "Creates, captures and refunds an authorization.",
+	description: "General input error (40000)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
 		let result: boolean

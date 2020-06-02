@@ -5,7 +5,7 @@ import { addCommand } from "./Module"
 
 addCommand({
 	name: "expired",
-	description: "Creates, captures and refunds an authorization.",
+	description: "Invalid expire date (40130)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
 		let result: boolean

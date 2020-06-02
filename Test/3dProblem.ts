@@ -4,8 +4,8 @@ import * as Authorization from "../Authorization"
 import { addCommand } from "./Module"
 
 addCommand({
-	name: "addauthentication",
-	description: "Creates, captures and refunds an authorization.",
+	name: "3d-problem",
+	description: "3-D Secure problem (40300)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
 		let result: boolean
@@ -13,7 +13,7 @@ addCommand({
 			amount: 13.37,
 			currency: "SEK",
 			card: {
-				pan: "420000404160000",
+				pan: "420000403000000",
 				expires: [ 2, 22 ],
 				csc: "987",
 			},

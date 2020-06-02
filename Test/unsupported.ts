@@ -5,7 +5,7 @@ import { addCommand } from "./Module"
 
 addCommand({
 	name: "unsupported",
-	description: "Creates, captures and refunds an authorization.",
+	description: "Unsupported card scheme (40111)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
 		let result: boolean

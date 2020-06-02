@@ -5,7 +5,7 @@ import { addCommand } from "./Module"
 
 addCommand({
 	name: "violation",
-	description: "Creates, captures and refunds an authorization.",
+	description: "Clearhaus rule violation (40200)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
 		let result: boolean

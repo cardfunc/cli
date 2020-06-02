@@ -2,11 +2,10 @@ import * as gracely from "gracely"
 import * as cardfunc from "@cardfunc/model"
 import * as Authorization from "../Authorization"
 import { addCommand } from "./Module"
-import { getDatum } from "node-persist"
 
 addCommand({
 	name: "error",
-	description: "Creates, captures and refunds an authorization.",
+	description: "Clearhaus error (50000)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
 		let result: boolean

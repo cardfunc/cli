@@ -5,7 +5,7 @@ import { addCommand } from "./Module"
 
 addCommand({
 	name: "limit",
-	description: "Creates, captures and refunds an authorization.",
+	description: "Amount limit exceeded (40415)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
 		let result: boolean

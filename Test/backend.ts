@@ -5,7 +5,7 @@ import { addCommand } from "./Module"
 
 addCommand({
 	name: "backend",
-	description: "Creates, captures and refunds an authorization.",
+	description: "Backend problem (40400)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
 		let result: boolean

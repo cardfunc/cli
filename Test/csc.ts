@@ -5,7 +5,7 @@ import { addCommand } from "./Module"
 
 addCommand({
 	name: "csc",
-	description: "Creates, captures and refunds an authorization.",
+	description: "Invalid CSC (40120)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
 		let result: boolean
