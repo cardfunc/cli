@@ -4,6 +4,7 @@ import * as configuration from "./package.json"
 
 export interface Module {
 	readonly name: string
+	readonly description: string
 	readonly commands: { [command: string]: Command | undefined }
 }
 export namespace Module {
@@ -36,9 +37,10 @@ export namespace Module {
 	}
 	register({
 		name: "help",
+		description: "Shows help.",
 		commands: {
 			_: {
-				name: "_",
+				name: "",
 				description: "",
 				examples: [
 					["", "Shows module overview."],
@@ -50,11 +52,11 @@ export namespace Module {
 					const command = module && argument.length > 1 && module.commands[argument[1]]
 					console.log("\nCardFunc CLI\n")
 					if (command && module)
-						console.log(`cardfunc ${ module.name } ${ command.name } <command>\n\n${ command.description }\n\nCommands:\n${ command.examples.map(example => `${ example.join("\t") }`).join("\n") }\n`)
+						console.log(`cardfunc ${ module.name } ${ command.name } <command>\n\n${ command.description }\n\nExamples:\n${ command.examples.map(example => `${ example.join("\t") }`).join("\n") }\n`)
 					else if (module)
 						console.log(`cardfunc ${ module.name } <command>\n\nCommands:\n${ [...new Set(Object.values(module.commands))].map(c => `${ c?.name }\t${ c?.description }`).join("\n") }\n`)
 					else
-						console.log(`cardfunc help <module>\n\nModules:\n${ [...new Set(Object.values(modules))].map(m => m?.name).join("\n") }\n`)
+						console.log(`To get started, set a server.\nThe server with the name default is used by default when no --server flag is used.\n\ncardfunc help <module>\n\nModules:\n${ [...new Set(Object.values(modules))].map(m => `${ m?.name.padEnd(16, " ")}${ m?.description.padStart(6, " ")}`).join("\n") }\n`)
 					return true
 				},
 			},
@@ -62,6 +64,7 @@ export namespace Module {
 	}, "help", "h", "?")
 	register({
 		name: "version",
+		description: "Shows version.",
 		commands: {
 			_: {
 				name: "_",
