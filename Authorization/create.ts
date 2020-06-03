@@ -37,6 +37,7 @@ addCommand({
 			isoly.Currency.is(currency) &&
 			cardfunc.Card.Expires.is(expires) &&
 			await create(connection, {
+				number: authly.Identifier.generate(4),
 				amount, currency,
 				card: {
 					pan: argument[2],
