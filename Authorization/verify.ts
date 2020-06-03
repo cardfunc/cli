@@ -1,6 +1,4 @@
-import * as gracely from "gracely"
 import * as cardfunc from "@cardfunc/model"
-import { Connection } from "../Connection"
 import { addCommand } from "./Module"
 
 export function verify(authorization: string): Promise<cardfunc.Authorization | undefined> {
