@@ -9,5 +9,6 @@ export function addCommand(command: Command) {
 
 Module.register({
 	name: "authorization",
+	description: "Creates an authorization.",
 	commands,
 }, "authorization", "a")

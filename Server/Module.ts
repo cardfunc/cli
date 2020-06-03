@@ -9,5 +9,6 @@ export function addCommand(command: Command) {
 
 Module.register({
 	name: "server",
+	description: "Adds or lists server.",
 	commands,
 }, "server", "s")

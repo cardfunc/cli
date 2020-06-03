@@ -9,12 +9,13 @@ export function addCommand(command: Command) {
 
 Module.register({
 	name: "test",
+	description: "Runs tests.",
 	commands,
 }, "test", "t")
 
 addCommand({
 	name: "_",
-	description: "Runs all tests.",
+	description: "Runs tests.",
 	examples: [["", "Invoke all tests."]],
 	execute: async (connection, argument, flags) => {
 		console.log("CardFunc Test\n")
