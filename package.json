@@ -61,13 +61,15 @@
   "gracely": "0.0.31",
   "isoly": "0.0.13",
   "node-fetch": "^2.6.0",
-  "node-persist": "^3.0.5"
+  "node-persist": "^3.0.5",
+  "open": "^7.0.4"
  },
  "devDependencies": {
   "@types/jest": "^25.1.2",
   "@types/node": "^13.7.0",
   "@types/node-fetch": "^2.5.7",
   "@types/node-persist": "^3.0.0",
+  "@types/open": "^6.2.1",
   "babel-core": "^6.26.3",
   "babel-jest": "^25.1.0",
   "jest": "^25",
