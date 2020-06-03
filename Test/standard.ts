@@ -18,7 +18,7 @@ addCommand({
 				csc: "987",
 			},
 		}
-		const token = connection && await Authorization.create(connection, creatable)
+		const token = connection && await Authorization.create(connection, creatable, true)
 		if (result = !gracely.Error.is(token)) {
 			const a = token && await cardfunc.Authorization.verify(token) || undefined
 			const c = connection && token && await Authorization.capture(connection, token)
