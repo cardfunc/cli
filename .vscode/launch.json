@@ -33,10 +33,6 @@
 			"request": "launch",
 			"name": "test",
 			"args": [
-				"--server",
-				"cloud",
-				"--url",
-				"https://cardfuncleft.azurewebsites.net",
 				"test"
 			],
 			"skipFiles": [
@@ -56,7 +52,8 @@
 				"help",
 				"--server",
 				"test",
-				"server"
+				"authorization",
+				"create"
 			],
 			"skipFiles": [
 				"<node_internals>/**"
