@@ -18,7 +18,7 @@ addCommand({
 				csc: "988",
 			},
 		}
-		const token = connection && await Authorization.create(connection, creatable)
+		const token = connection && await Authorization.create(connection, creatable, true)
 		return gracely.client.malformedContent.is(token) && token.content.property == "card.csc"
 	}
 })
