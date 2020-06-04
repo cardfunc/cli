@@ -16,7 +16,7 @@ export async function create(connection: Connection, authorization: cardfunc.Aut
 	else if (auto3d)
 		result = await post(connection, { ...authorization, pares: (await getPares(response)).PaRes })
 	else {
-		await open(`${ connection.url }/redirect/post?target=${ encodeURIComponent(response.content.url) }&PaReq=${ encodeURIComponent(response.content.pareq) }&MD=MD&TermUrl=${ encodeURIComponent("https://postman-echo.com/post") }`)
+		await open(`${ connection.url }/redirect/post?target=${ encodeURIComponent(response.content.url) }&PaReq=${ encodeURIComponent(response.content.pareq) }&MD=MD&TermUrl=${ encodeURIComponent(connection.url) }/emv3d/done/cli`)
 		result = response
 	}	
 	return result
