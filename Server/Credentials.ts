@@ -27,4 +27,8 @@ export namespace Credentials {
 	export async function list(): Promise<string[]> {
 		return await initialized && storage.keys()
 	}
+	export async function remove(name: string): Promise<boolean> {
+		const result = await initialized && await storage.removeItem(name)
+		return result.removed
+		}
 }
