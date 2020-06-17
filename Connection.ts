@@ -15,7 +15,7 @@ export class Connection {
 			headers: {
 				"content-type": "application/json; charset=utf-8",
 				accept: "application/json; charset=utf-8",
-				authorization: authentication == "admin" ? `Basic ${ authly.Base64.encode(this.merchant.administrator?.user + ":" + this.merchant.administrator?.password, "url") }` : `Bearer ${ this.merchant.keys[authentication] }`,
+				authorization: authentication == "admin" ? `Basic ${ authly.Base64.encode(this.merchant.administrator?.user + ":" + this.merchant.administrator?.password, "standard", "=") }` : `Bearer ${ this.merchant.keys[authentication] }`,
 				...init.headers,
 			},
 		}
