@@ -8,7 +8,6 @@ addCommand({
 	description: "Invalid expire date (40130)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
-		let result: boolean
 		const creatable: cardfunc.Authorization.Creatable = {
 			amount: 13.37,
 			currency: "SEK",

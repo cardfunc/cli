@@ -18,7 +18,7 @@ export async function create(connection: Connection, authorization: cardfunc.Aut
 	else {
 		await open(`${ connection.url }/redirect/post?target=${ encodeURIComponent(response.content.url) }&PaReq=${ encodeURIComponent(response.content.pareq) }&MD=MD&TermUrl=${ encodeURIComponent(connection.url) }/emv3d/done/cli`)
 		result = response
-	}	
+	}
 	return result
 }
 addCommand({

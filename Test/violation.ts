@@ -8,7 +8,6 @@ addCommand({
 	description: "Clearhaus rule violation (40200)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
-		let result: boolean
 		const creatable: cardfunc.Authorization.Creatable = {
 			amount: 13.37,
 			currency: "SEK",
