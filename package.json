@@ -61,7 +61,8 @@
   "isoly": "0.0.13",
   "node-fetch": "^2.6.0",
   "node-persist": "^3.0.5",
-  "open": "^7.0.4"
+  "open": "^7.0.4",
+  "paramly": "0.0.3"
  },
  "devDependencies": {
   "@types/jest": "^25.1.2",
@@ -73,7 +74,7 @@
   "babel-jest": "^25.1.0",
   "jest": "^25",
   "ts-jest": "^25.2.0",
-  "tslint": "^6.0.0",
+  "tslint": "^6.1.2",
   "typescript": "^3.7.5",
   "typescript-tslint-plugin": "^0.5.5",
   "watch": "^1.0.2"

@@ -8,7 +8,6 @@ addCommand({
 	description: "Invalid description (40150)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
-		let result: boolean
 		const creatable: cardfunc.Authorization.Creatable = {
 			amount: 13.37,
 			currency: "SEK",

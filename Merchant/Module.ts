@@ -1,13 +1,14 @@
-import { Module } from "../Module"
-import { Command } from "../Command"
+import * as paramly from "paramly"
+import { application } from "../application"
+import { Connection } from "../Connection"
 
-const commands: { [command: string]: Command } = {}
+const commands: { [command: string]: paramly.Command<Connection> } = {}
 
-export function addCommand(command: Command) {
+export function addCommand(command: paramly.Command<Connection>) {
 	commands[command.name] = command
 }
 
-Module.register({
+application.register({
 	name: "merchant",
 	description: "Creates, updates and lists merchants.",
 	commands,
