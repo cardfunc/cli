@@ -5,7 +5,7 @@ import { Connection } from "../Connection"
 import { addCommand } from "./Module"
 
 export async function update(connection: Connection, token: authly.Token, card: Partial<cardfunc.Card.Creatable>): Promise<cardfunc.Card | gracely.Error> {
-		return connection.patch<cardfunc.Card>("admin", `card/${ token }`, card)
+		return connection.patch<cardfunc.Card>("public", `card/${ token }`, card)
 }
 addCommand({
 	name: "update",
