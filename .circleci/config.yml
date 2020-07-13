@@ -50,6 +50,15 @@ jobs:
             npm publish --access public
 workflows:
   version: 2.1
+  hourly:
+    triggers:
+      - schedule:
+        cron: "37 * * * *"
+        filters:
+          branches:
+            only: master
+    jobs:
+      - build
   build-flow:
     jobs:
       - build:
