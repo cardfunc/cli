@@ -40,7 +40,7 @@ jobs:
       - run:
           name: Send SMS
           command: |
-            curl -X POST https://api.46elks.se/a1/sms \
+            curl -X POST https://api.46elks.com/a1/sms \
               -u ${ELKS_API_USER}:${ELKS_API_PASSWORD} \
               -d from=CardFuncCI \
               -d to=${ELKS_TO} \
