@@ -27,7 +27,7 @@ commands:
           command: npm run build
       - run:
           name: Run tests
-          command: npm run test && exit 0
+          command: npm run test && exit 1
 jobs:
   build:
     <<: *default
