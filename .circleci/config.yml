@@ -18,27 +18,25 @@ commands:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+  test:
+    description: "build & test"
+    steps:
+      - prepare
+      - run:
+          name: Build
+          command: npm run build
+      - run:
+          name: Run tests
+          command: npm run test
 jobs:
   build:
     <<: *default
     steps:
-      - prepare
-      - run:
-          name: Build
-          command: npm run build
-      - run:
-          name: Run tests
-          command: npm run test
+      - test
   hourly:
     <<: *default
     steps:
-      - prepare
-      - run:
-          name: Build
-          command: npm run build
-      - run:
-          name: Run tests
-          command: npm run test
+      - test
       - run:
           name: Send SMS
           command: |
