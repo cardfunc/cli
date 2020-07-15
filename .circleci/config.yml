@@ -27,7 +27,7 @@ commands:
           command: npm run build
       - run:
           name: Run tests
-          command: ERROR=$(npm run test && exit 1)
+          command: npm run test
 jobs:
   build:
     <<: *default
@@ -44,7 +44,7 @@ jobs:
               -u ${ELKS_API_USER}:${ELKS_API_PASSWORD} \
               -d from=CardFuncCI \
               -d to=${ELKS_TO} \
-              -d message="CardFunc CLI hourly test failed.\n${ERROR}"
+              -d message="CardFunc CLI hourly test failed."
           when: on_fail
   deploy:
     <<: *default
@@ -78,7 +78,7 @@ workflows:
       - hourly
   build:
     jobs:
-      - hourly:
+      - build:
           filters:
             branches:
               ignore: master
