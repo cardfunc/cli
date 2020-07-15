@@ -80,7 +80,7 @@ workflows:
       - hourly
   build:
     jobs:
-      - build:
+      - hourly:
           filters:
             branches:
               ignore: master
