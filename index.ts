@@ -5,7 +5,6 @@ dotenv.config()
 import { application } from "./application"
 import "./Authorization"
 import "./Card"
-import "./Merchant"
 import "./Server"
 import "./Test"
 
