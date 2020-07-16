@@ -11,7 +11,8 @@ addCommand({
 	name: "update",
 	description: "Update card.",
 	examples: [
-		["<token> 4111111111111111 2/22 987 <pares>", "Update card."],
+		["<token> 4111111111111111 2/22 987", "Update card."],
+		["<token> 4111111111111111 2/22 987 <pares>", "Update card with PaRes."],
 		["<token> <pares>", "Update pares."],
 	],
 	execute: async (connection, argument, flags) => {
@@ -24,10 +25,10 @@ addCommand({
 			if (cardfunc.Card.Expires.is(expires))
 				card.expires = expires
 			card.csc = argument[3]
-			card.pares = argument[4] == "auto" ? undefined : argument[4]
+			card.pares = argument[4] == "auto" || !argument[4] ? undefined : argument[4]
 		}
 		const result = connection && await update(connection, argument[0], card)
-		console.info(JSON.stringify(result, undefined, "\t"))
+		console.info(typeof result == "string" ? result : JSON.stringify(result, undefined, "\t"))
 		return !gracely.Error.is(result)
 	}
 })

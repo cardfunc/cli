@@ -30,6 +30,26 @@
 		{
 			"type": "node",
 			"request": "launch",
+			"name": "authorization create (card token)",
+			"args": [
+				"authorization",
+				"create",
+				"42",
+				"SEK",
+				"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYXJkZnVuYyIsImlhdCI6MTU5NDgyMDg2ODkwNiwiYXVkIjoicHJvZHVjdGlvbiIsInR5cGUiOiJzaW5nbGUgdXNlIiwiY2FyZCI6ImJrdHJtbldJIn0.cvniZiOqM--f-7vhHVZk4FY4XL2pYZpIPPHm_01mCzqNa5jjqmc4UiDyF8lIczD06f_Q-MRzGKNipcD8a5BxcHzcz-wBZy83fRYBF9c_bhVUgYgatMviObRpyuvIfvdnV9-1klf581SBmfzqJlWFz_W41-lf2ZLaqnsQNV1FC3vFdLLTJxzChxO3EMMpJzJ-krIBhXh7MIUkWPOktq-oXjHF4prDeRGKvtz2jwer8qG32u3E9V76YhBRXZhsk1tUwzOtLRI84xeCIh1c4ZEhCGZVdSf09BP5KlQIPxW0GU4-IXh8PXoAVvk2ObbrgMh0jcnVObm1PvPZVH8X5GySPQ"
+			],
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}/dist/index.js",
+			"preLaunchTask": "build",
+			"outFiles": [
+				"${workspaceFolder}/dist/**/*.js"
+			]
+		},
+		{
+			"type": "node",
+			"request": "launch",
 			"name": "authorization capture",
 			"args": [
 				"authorization",

@@ -1,6 +1,8 @@
 import * as gracely from "gracely"
+import * as authly from "authly"
 import * as cardfunc from "@cardfunc/model"
 import * as Authorization from "../Authorization"
+import * as Card from "../Card"
 import { addCommand } from "./Module"
 
 addCommand({
@@ -8,16 +10,17 @@ addCommand({
 	description: "Invalid expire date (40130)",
 	examples: [],
 	execute: async (connection, argument, flags) => {
-		const creatable: cardfunc.Authorization.Creatable = {
+		const card = connection && await Card.create(connection, {
+			pan: "4111111111111111",
+			expires: [ 2, 20 ],
+			csc: "987",
+		})
+		const creatable = authly.Token.is(card) && {
 			amount: 13.37,
 			currency: "SEK",
-			card: {
-				pan: "4111111111111111",
-				expires: [ 2, 20 ],
-				csc: "987",
-			},
+			card,
 		}
-		const token = connection && await Authorization.create(connection, creatable, true)
+		const token = connection && cardfunc.Authorization.Creatable.is(creatable) && await Authorization.create(connection, creatable, true)
 		return gracely.client.malformedContent.is(token) &&
 			token.content.property == "card.pan" &&
 			token.content.description == "Card expired"
