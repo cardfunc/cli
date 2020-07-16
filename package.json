@@ -62,7 +62,7 @@
   "node-fetch": "^2.6.0",
   "node-persist": "^3.1.0",
   "open": "^7.0.4",
-  "paramly": "0.0.4"
+  "paramly": "0.0.5"
  },
  "devDependencies": {
   "@types/jest": "^26.0.4",
