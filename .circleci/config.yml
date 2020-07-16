@@ -18,9 +18,8 @@ commands:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-jobs:
-  build:
-    <<: *default
+  test:
+    description: "build & test"
     steps:
       - prepare
       - run:
@@ -29,6 +28,24 @@ jobs:
       - run:
           name: Run tests
           command: npm run test
+jobs:
+  build:
+    <<: *default
+    steps:
+      - test
+  hourly:
+    <<: *default
+    steps:
+      - test
+      - run:
+          name: Send SMS
+          command: |
+            curl -X POST https://api.46elks.com/a1/sms \
+              -u ${ELKS_API_USER}:${ELKS_API_PASSWORD} \
+              -d from=CardFuncCI \
+              -d to=${ELKS_TO} \
+              -d message="CardFunc CLI hourly test failed. ${CIRCLE_BUILD_URL}"
+          when: on_fail
   deploy:
     <<: *default
     steps:
@@ -58,8 +75,8 @@ workflows:
             branches:
               only: master
     jobs:
-      - build
-  build-flow:
+      - hourly
+  build:
     jobs:
       - build:
           filters:
