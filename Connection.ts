@@ -1,10 +1,10 @@
 import { default as fetch, RequestInit } from "node-fetch"
 import * as authly from "authly"
 import * as gracely from "gracely"
-import * as Server from "./Server/Credentials"
+import * as Server from "./Server"
 
 export class Connection {
-	constructor(readonly merchant: Server.Credentials, readonly url: string) {
+	constructor(readonly storage: Server.Storage, readonly credentials: Server.Credentials, readonly url: string) {
 	}
 	private async fetch<T>(authentication: "private" | "public" | "admin", resource: string, init: RequestInit, body?: any): Promise<T | gracely.Error> {
 		const url = this.url + "/" + resource
@@ -15,7 +15,7 @@ export class Connection {
 			headers: {
 				"content-type": "application/json; charset=utf-8",
 				accept: "application/json; charset=utf-8",
-				authorization: authentication == "admin" ? `Basic ${ authly.Base64.encode(this.merchant.administrator?.user + ":" + this.merchant.administrator?.password, "standard", "=") }` : `Bearer ${ this.merchant.keys[authentication] }`,
+				authorization: authentication == "admin" ? `Basic ${ authly.Base64.encode(this.credentials.administrator?.user + ":" + this.credentials.administrator?.password, "standard", "=") }` : `Bearer ${ this.credentials.keys[authentication] }`,
 				...init.headers,
 			},
 		}
@@ -59,10 +59,12 @@ export class Connection {
 	options<T>(authentication: "private" | "public" | "admin", resource: string): Promise<T | gracely.Error> {
 		return this.fetch(authentication, resource, { method: "OPTIONS" })
 	}
-	static async create(server?: string | Server.Credentials, url?: string): Promise<Connection | undefined> {
+	static async create(storage: string | Server.Storage, server?: string | Server.Credentials, url?: string): Promise<Connection | undefined> {
+		if (typeof storage == "string")
+			storage = Server.Storage.open(storage)
 		if (typeof server == "string")
-			server = await Server.Credentials.load(server)
+			server = await storage.load(server)
 		const m = server && await authly.Verifier.create("public")?.verify(server.keys.public)
-		return server && m && m.iss ? new Connection(server, url ?? m.iss) : undefined
+		return server && m && m.iss ? new Connection(storage, server, url ?? m.iss) : undefined
 	}
 }

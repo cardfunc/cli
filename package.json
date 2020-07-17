@@ -48,7 +48,10 @@
   "dev": "watch 'npm run build' .",
   "lint": "tslint --config tslint.json --project .",
   "build": "tsc -p .",
-  "test": "node dist/index.js --server env test",
+  "pretest": "npm run build",
+  "test": "node dist/run.js --server env test",
+  "prerun": "npm run build",
+  "run": "node dist/run.js",
   "prepare": "npm run build",
   "clean": "rm -rf dist node_modules coverage"
  },
