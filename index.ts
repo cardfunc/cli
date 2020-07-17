@@ -1,11 +1,13 @@
-#!/usr/bin/env node
-import * as dotenv from "dotenv"
-dotenv.config()
-
+import * as Authorization from "./Authorization"
+import * as Card from "./Card"
+import * as Server from "./Server"
+import * as Test from "./Test"
 import { application } from "./application"
-import "./Authorization"
-import "./Card"
-import "./Server"
-import "./Test"
 
-application.run(process.argv).then(result => process.exit(result ? 0 : 1), _ => process.exit(1))
+export {
+	Authorization,
+	Card,
+	Server,
+	Test,
+	application,
+}
