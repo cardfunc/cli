@@ -4,37 +4,41 @@ import * as gracely from "gracely"
 import * as Server from "./Server"
 
 export class Connection {
-	constructor(readonly storage: Server.Storage, readonly credentials: Server.Credentials, readonly url: string) {
+	constructor(readonly storage: Server.Storage, readonly credentials: Server.Credentials | undefined, readonly url: string = "") {
 	}
 	private async fetch<T>(authentication: "private" | "public" | "admin", resource: string, init: RequestInit, body?: any): Promise<T | gracely.Error> {
-		const url = this.url + "/" + resource
-		if (body)
-			init.body = JSON.stringify(body)
-		init = {
-			...init,
-			headers: {
-				"content-type": "application/json; charset=utf-8",
-				accept: "application/json; charset=utf-8",
-				authorization: authentication == "admin" ? `Basic ${ authly.Base64.encode(this.credentials.administrator?.user + ":" + this.credentials.administrator?.password, "standard", "=") }` : `Bearer ${ this.credentials.keys[authentication] }`,
-				...init.headers,
-			},
-		}
 		let result: T | gracely.Error
-		try {
-			const response = await fetch(url, init)
-			switch (response.headers.get("Content-Type")) {
-				case "application/json; charset=utf-8":
-					result = await response.json() as T
-					break
-				case "application/jwt; charset=utf-8":
-					result = await response.text() as any as T
-					break
-				default:
-					result = { status: response.status, type: "unknown" }
-					break
-			}
-		} catch (error) {
+		if (!this.credentials)
 			result = gracely.client.notFound()
+		else {
+			const url = this.url + "/" + resource
+			if (body)
+				init.body = JSON.stringify(body)
+			init = {
+				...init,
+				headers: {
+					"content-type": "application/json; charset=utf-8",
+					accept: "application/json; charset=utf-8",
+					authorization: authentication == "admin" ? `Basic ${ authly.Base64.encode(this.credentials.administrator?.user + ":" + this.credentials.administrator?.password, "standard", "=") }` : `Bearer ${ this.credentials.keys[authentication] }`,
+					...init.headers,
+				},
+			}
+			try {
+				const response = await fetch(url, init)
+				switch (response.headers.get("Content-Type")) {
+					case "application/json; charset=utf-8":
+						result = await response.json() as T
+						break
+					case "application/jwt; charset=utf-8":
+						result = await response.text() as any as T
+						break
+					default:
+						result = { status: response.status, type: "unknown" }
+						break
+				}
+			} catch (error) {
+				result = gracely.client.notFound()
+			}
 		}
 		return result
 	}
@@ -65,6 +69,6 @@ export class Connection {
 		if (typeof server == "string")
 			server = await storage.load(server)
 		const m = server && await authly.Verifier.create("public")?.verify(server.keys.public)
-		return server && m && m.iss ? new Connection(storage, server, url ?? m.iss) : undefined
+		return new Connection(storage, server, url ?? m?.iss)
 	}
 }
