@@ -63,8 +63,8 @@ export class Connection {
 	options<T>(authentication: "private" | "public" | "admin", resource: string): Promise<T | gracely.Error> {
 		return this.fetch(authentication, resource, { method: "OPTIONS" })
 	}
-	change(properties: { storage: Server.Storage | undefined, credentials: Server.Credentials | undefined, url: string | undefined }): Connection {
-		return new Connection(properties.storage ?? this.storage, properties.credentials ?? this.credentials, properties.url ?? this.url)
+	change(properties: { storage: Server.Storage | string | undefined, credentials: Server.Credentials | string | undefined, url: string | undefined }): Promise<Connection | undefined> {
+		return Connection.create(properties.storage ?? this.storage, properties.credentials ?? this.credentials, properties.url ?? this.url)
 	}
 	static async create(storage: string | Server.Storage, server?: string | Server.Credentials, url?: string): Promise<Connection | undefined> {
 		if (typeof storage == "string")
