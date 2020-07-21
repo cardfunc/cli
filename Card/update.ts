@@ -4,8 +4,8 @@ import * as paramly from "paramly"
 import * as cardfunc from "@cardfunc/model"
 import { Connection } from "../Connection"
 
-export async function update(connection: Connection, token: authly.Token, card: Partial<cardfunc.Card.Creatable>): Promise<cardfunc.Card | gracely.Error> {
-		return connection.patch<cardfunc.Card>("public", `card/${ token }`, card)
+export async function update(connection: Connection, token: authly.Token, card: Partial<cardfunc.Card.Creatable>): Promise<authly.Token | gracely.Error> {
+		return connection.patch<authly.Token>("public", `card/${ token }`, card)
 }
 export namespace update {
 	export const command: paramly.Command<Connection> = {

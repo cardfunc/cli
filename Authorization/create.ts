@@ -5,17 +5,23 @@ import * as authly from "authly"
 import * as paramly from "paramly"
 import * as cardfunc from "@cardfunc/model"
 import { Connection } from "../Connection"
-import { getPares, isParesError } from "./getPares"
+import * as Card from "../Card"
+import * as Pares from "../Pares"
 import { post } from "./post"
 
 export async function create(connection: Connection, authorization: cardfunc.Authorization.Creatable, auto3d: boolean): Promise<authly.Token | gracely.Error> {
 	const response = await post(connection, authorization)
 	let result: authly.Token | gracely.Error
-	if (!isParesError(response))
+	if (!Pares.missing(response))
 		result = response
-	else if (auto3d)
-		result = await post(connection, { ...authorization, pares: (await getPares(response)).PaRes })
-	else {
+	else if (auto3d) {
+		const pares = await Pares.get(response)
+		if (typeof authorization.card == "string") {
+			const card = await Card.update(connection, authorization.card, { pares })
+			result = gracely.Error.is(card) ? card : await post(connection, { ...authorization, card })
+		} else
+			result = await post(connection, { ...authorization, pares })
+	} else {
 		await open(`${ connection.url }/redirect/post?target=${ encodeURIComponent(response.content.url) }&PaReq=${ encodeURIComponent(response.content.pareq) }&MD=MD&TermUrl=${ encodeURIComponent(connection.url) }/emv3d/done/cli`)
 		result = response
 	}
