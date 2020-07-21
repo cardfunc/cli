@@ -4,8 +4,8 @@ import * as paramly from "paramly"
 import * as cardfunc from "@cardfunc/model"
 import { Connection } from "../Connection"
 
-export async function create(connection: Connection, card: cardfunc.Card.Creatable): Promise<cardfunc.Card | gracely.Error> {
-		return connection.post<cardfunc.Card>("public", "card", card)
+export async function create(connection: Connection, card: cardfunc.Card.Creatable): Promise<authly.Token | gracely.Error> {
+		return connection.post<authly.Token>("public", "card", card)
 }
 export namespace create {
 	export const command: paramly.Command<Connection> = {
