@@ -1,7 +1,7 @@
 import * as gracely from "gracely"
 import * as cardfunc from "@cardfunc/model"
 import * as Authorization from "../Authorization"
-import { addCommand } from "./Module"
+import { addCommand } from "./module"
 
 addCommand({
 	name: "legacy",

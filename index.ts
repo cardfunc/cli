@@ -1,13 +1,15 @@
 import * as Authorization from "./Authorization"
 import * as Card from "./Card"
+import { Connection } from "./Connection"
+import * as Pares from "./Pares"
 import * as Server from "./Server"
 import * as Test from "./Test"
-import { application } from "./application"
 
 export {
 	Authorization,
 	Card,
+	Connection,
+	Pares,
 	Server,
 	Test,
-	application,
 }

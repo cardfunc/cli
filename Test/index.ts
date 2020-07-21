@@ -21,4 +21,8 @@ import "./transaction"
 import "./restricted"
 import "./unsupported"
 import "./violation"
-import "./Module"
+import { module } from "./module"
+
+export {
+	module,
+}

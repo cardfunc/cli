@@ -2,7 +2,7 @@ import * as authly from "authly"
 import * as cardfunc from "@cardfunc/model"
 import * as Authorization from "../Authorization"
 import * as Card from "../Card"
-import { addCommand } from "./Module"
+import { addCommand } from "./module"
 
 addCommand({
 	name: "standard",
