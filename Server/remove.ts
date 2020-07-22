@@ -14,7 +14,7 @@ export namespace remove {
 		execute: async (connection, argument, flags) => {
 			const result = connection &&
 				await remove(connection, argument[0])
-			console.log("Attempt to remove server:")
+			console.info("Attempt to remove server:")
 			return result ?? false
 		},
 	}

@@ -20,7 +20,7 @@ export namespace get {
 		],
 		execute: async (connection, argument, flags) => {
 			const result = await get({ url: argument[0], pareq: argument[1] })
-			console.log(result)
+			console.info(result)
 			return !!result
 		}
 	}
