@@ -33,19 +33,6 @@ jobs:
     <<: *default
     steps:
       - test
-  hourly:
-    <<: *default
-    steps:
-      - test
-      - run:
-          name: Send SMS
-          command: |
-            curl -X POST https://api.46elks.com/a1/sms \
-              -u ${ELKS_API_USER}:${ELKS_API_PASSWORD} \
-              -d from=CardFuncCI \
-              -d to=${ELKS_TO} \
-              -d message="CardFunc CLI hourly test failed. ${CIRCLE_BUILD_URL}"
-          when: on_fail
   deploy:
     <<: *default
     steps:
@@ -67,15 +54,6 @@ jobs:
             npm publish --access public
 workflows:
   version: 2.1
-  hourly:
-    triggers:
-      - schedule:
-          cron: "37 * * * *"
-          filters:
-            branches:
-              only: master
-    jobs:
-      - hourly
   build:
     jobs:
       - build:
