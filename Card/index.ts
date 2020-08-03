@@ -3,7 +3,7 @@ import { update } from "./update"
 
 const cardModule = {
 	name: "card",
-	description: "Creates, updates and lists cards.",
+	description: "Creates and updates cards.",
 	commands: {
 		create: create.command,
 		update: update.command,
