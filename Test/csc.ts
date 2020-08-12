@@ -11,12 +11,12 @@ addCommand({
 	examples: [],
 	execute: async (connection, argument, flags) => {
 		const card = connection && await Card.create(connection, {
-			pan: "4111111111111111",
+			pan: "4200000000000000", // Force trigger "Invalid CSC (40120)" part 1/2
 			expires: [ 2, 22 ],
-			csc: "988",
+			csc: "988", // Does only (in test systems) cause clearhaus to respond with status 20000 (approved) and csc: { present: true, matches: false }
 		})
 		const creatable = authly.Token.is(card) && {
-			amount: 13.37,
+			amount: 401.20, // Force trigger "Invalid CSC (40120)" part 2/2
 			currency: "SEK",
 			card,
 		}
