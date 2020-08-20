@@ -23,6 +23,6 @@ addCommand({
 		const token = connection && cardfunc.Authorization.Creatable.is(creatable) && await Authorization.create(connection, creatable, true)
 		return gracely.client.malformedContent.is(token) &&
 			token.content.property == "card.pan" &&
-			token.content.description == "Card expired"
+			token.content.description.startsWith("Card expired")
 	}
 })
