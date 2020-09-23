@@ -8,7 +8,7 @@ export async function get(request: { url: string, pareq: string } | gracely.Erro
 	if (missing(request))
 		request = request.content
 	const dialog3d = await utility.postForm(request.url, { TermUrl: "http://localhost", PaReq: request.pareq, MD: "data"})
-	return (await utility.postForm(request.url, { ...dialog3d, Authenticated: "authenticated", MD: "" }))?.PaRes
+	return (await utility.postForm(request.url, { ...dialog3d, authenticated: "authenticated", MD: "" }))?.PaRes
 }
 
 export namespace get {
