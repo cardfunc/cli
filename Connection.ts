@@ -1,6 +1,7 @@
 import { default as fetch, RequestInit } from "node-fetch"
 import * as authly from "authly"
 import * as gracely from "gracely"
+import * as cardfunc from "@cardfunc/model"
 import * as Server from "./Server"
 
 export class Connection {
@@ -71,7 +72,7 @@ export class Connection {
 			storage = Server.Storage.open(storage)
 		if (typeof server == "string")
 			server = await storage.load(server)
-		const m = server && await authly.Verifier.create("public")?.verify(server.keys.public)
-		return new Connection(storage, server, url ?? m?.iss)
+		const merchantKey = server && await cardfunc.Merchant.Key.KeyInfo.unpack(server.keys.public, "public")
+		return new Connection(storage, server, url ?? storage.name == "cardfunc" ? merchantKey?.card.url : merchantKey?.iss)
 	}
 }

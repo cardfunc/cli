@@ -3,8 +3,10 @@ import { Credentials } from "./Credentials"
 
 export class Storage {
 	backend: KeyValueStore.LocalStorage
+	name: string
 	initialized: Promise<KeyValueStore.InitOptions>
 	private constructor(name: string) {
+		this.name = name
 		this.backend = KeyValueStore.create({ dir: (process.env.HOME ?? ".") + "/." + name })
 		this.initialized = this.backend.init()
 	}
