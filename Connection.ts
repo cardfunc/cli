@@ -73,6 +73,6 @@ export class Connection {
 		if (typeof server == "string")
 			server = await storage.load(server)
 		const merchantKey = server && await cardfunc.Merchant.Key.KeyInfo.unpack(server.keys.public, "public")
-		return new Connection(storage, server, url ?? storage.name == "cardfunc" ? merchantKey?.card.url : merchantKey?.iss)
+		return new Connection(storage, server, url ?? (storage.name == "cardfunc" ? merchantKey?.card.url : merchantKey?.iss))
 	}
 }
