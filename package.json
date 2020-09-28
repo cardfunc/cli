@@ -1,6 +1,6 @@
 {
  "name": "@cardfunc/cli",
- "version": "0.0.35",
+ "version": "0.0.36",
  "description": "CardFunc command line interface.",
  "author": "CardFunc",
  "license": "MIT",
