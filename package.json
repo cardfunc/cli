@@ -56,13 +56,13 @@
   "clean": "rm -rf dist node_modules coverage"
  },
  "dependencies": {
-  "@cardfunc/model": "0.0.69",
+  "@cardfunc/model": "0.0.77",
   "@types/dotenv": "^8.2.0",
   "authly": "0.0.40",
   "dotenv": "^8.2.0",
   "gracely": "0.0.33",
   "isoly": "0.0.15",
-  "node-fetch": "^2.6.0",
+  "node-fetch": "^2.6.1",
   "node-persist": "^3.1.0",
   "open": "^7.0.4",
   "paramly": "0.0.5"
