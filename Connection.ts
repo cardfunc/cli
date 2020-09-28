@@ -72,7 +72,8 @@ export class Connection {
 			storage = Server.Storage.open(storage)
 		if (typeof server == "string")
 			server = await storage.load(server)
-		const merchantKey = server && await cardfunc.Merchant.Key.KeyInfo.unpack(server.keys.public, "public")
-		return new Connection(storage, server, url ?? (storage.name == "cardfunc" ? merchantKey?.card.url : merchantKey?.iss))
+		const payfuncKey = server && await (authly.Verifier.create("public")).verify(server.keys.public)
+		const cardfuncKey = server && await cardfunc.Merchant.Key.KeyInfo.unpack(server.keys.public, "public")
+		return new Connection(storage, server, url ?? (storage.name == "cardfunc" ? cardfuncKey?.card.url : payfuncKey?.iss))
 	}
 }
