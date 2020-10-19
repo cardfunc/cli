@@ -7,7 +7,7 @@ import * as Server from "./Server"
 export class Connection {
 	constructor(readonly storage: Server.Storage, readonly credentials: Server.Credentials | undefined, readonly url: string = "") {
 	}
-	private async fetch<T>(authentication: "private" | "public" | "admin", resource: string, init: RequestInit, body?: any): Promise<T | gracely.Error> {
+	private async fetch<T>(authentication: "private" | "public" | "admin" | "agent", resource: string, init: RequestInit, body?: any): Promise<T | gracely.Error> {
 		let result: T | gracely.Error
 		if (!this.credentials)
 			result = gracely.client.notFound()
@@ -43,25 +43,25 @@ export class Connection {
 		}
 		return result
 	}
-	get<T>(authentication: "private" | "public" | "admin", resource: string): Promise<T | gracely.Error> {
+	get<T>(authentication: "private" | "public" | "admin" | "agent", resource: string): Promise<T | gracely.Error> {
 		return this.fetch<T>(authentication, resource, { method: "GET" })
 	}
-	put<T>(authentication: "private" | "public" | "admin", resource: string, body: any): Promise<T | gracely.Error> {
+	put<T>(authentication: "private" | "public" | "admin" | "agent", resource: string, body: any): Promise<T | gracely.Error> {
 		return this.fetch<T>(authentication, resource, { method: "PUT" }, body)
 	}
-	post<T>(authentication: "private" | "public" | "admin", resource: string, body: any): Promise<T | gracely.Error> {
+	post<T>(authentication: "private" | "public" | "admin" | "agent", resource: string, body: any): Promise<T | gracely.Error> {
 		return this.fetch<T>(authentication, resource, { method: "POST" }, body)
 	}
-	postToken(authentication: "private" | "public" | "admin", resource: string, body: any): Promise<authly.Token | gracely.Error> {
+	postToken(authentication: "private" | "public" | "admin" | "agent", resource: string, body: any): Promise<authly.Token | gracely.Error> {
 		return this.fetch<authly.Token>(authentication, resource, { method: "POST", headers: { accept: "application/jwt; charset=utf-8" } }, body)
 	}
-	patch<T>(authentication: "private" | "public" | "admin", resource: string, body: any): Promise<T | gracely.Error> {
+	patch<T>(authentication: "private" | "public" | "admin" | "agent", resource: string, body: any): Promise<T | gracely.Error> {
 		return this.fetch<T>(authentication, resource, { method: "PATCH" }, body)
 	}
-	delete<T>(authentication: "private" | "public" | "admin", resource: string): Promise<T | gracely.Error> {
+	delete<T>(authentication: "private" | "public" | "admin" | "agent", resource: string): Promise<T | gracely.Error> {
 		return this.fetch(authentication, resource, { method: "DELETE" })
 	}
-	options<T>(authentication: "private" | "public" | "admin", resource: string): Promise<T | gracely.Error> {
+	options<T>(authentication: "private" | "public" | "admin" | "agent", resource: string): Promise<T | gracely.Error> {
 		return this.fetch(authentication, resource, { method: "OPTIONS" })
 	}
 	change(properties: { storage?: Server.Storage | string, credentials?: Server.Credentials | string, url?: string }): Promise<Connection | undefined> {
