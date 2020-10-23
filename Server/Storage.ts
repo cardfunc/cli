@@ -19,6 +19,7 @@ export class Storage {
 			keys: {
 				private: process.env.privateKey!,
 				public: process.env.publicKey!,
+				agent: process.env.agentKey!,
 			},
 			administrator: { user: process.env.adminUser!, password: process.env.adminPassword! },
 		} : await this.initialized && this.backend.getItem(name)
