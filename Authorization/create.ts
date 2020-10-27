@@ -3,13 +3,13 @@ import * as isoly from "isoly"
 import * as gracely from "gracely"
 import * as authly from "authly"
 import * as paramly from "paramly"
-import * as cardfunc from "@cardfunc/model"
+import * as cardModel from "@payfunc/model-card"
 import { Connection } from "../Connection"
 import * as Card from "../Card"
 import * as Pares from "../Pares"
 import { post } from "./post"
 
-export async function create(connection: Connection, authorization: cardfunc.Authorization.Creatable, auto3d: boolean): Promise<authly.Token | gracely.Error> {
+export async function create(connection: Connection, authorization: cardModel.Authorization.Creatable, auto3d: boolean): Promise<authly.Token | gracely.Error> {
 	const response = await post(connection, authorization)
 	let result: authly.Token | gracely.Error
 	if (!Pares.missing(response))
@@ -43,7 +43,7 @@ export namespace create {
 			const currency = argument[1]
 			const expires = argument.length > 3 ? argument[3].split("/", 2).map(e => Number.parseInt(e)) : undefined
 			const token = argument[2]
-			const card: authly.Token | cardfunc.Card.Creatable | undefined = authly.Token.is(token) ? token : cardfunc.Card.Expires.is(expires) ? {
+			const card: authly.Token | cardModel.Card.Creatable | undefined = authly.Token.is(token) ? token : cardModel.Card.Expires.is(expires) ? {
 				pan: argument[2],
 				expires,
 				csc: argument[4],
@@ -56,10 +56,10 @@ export namespace create {
 				descriptor: argument[authly.Token.is(argument[3]) ? 4 : 6] ?? undefined,
 			}
 			const result = connection &&
-				cardfunc.Authorization.Creatable.is(authorization) &&
+				cardModel.Authorization.Creatable.is(authorization) &&
 				await create(connection, authorization, argument[5] == "auto")
 			console.info(typeof result == "string" ? result : JSON.stringify(result, undefined, "\t"))
-			return !!(typeof result == "string" && cardfunc.Authorization.verify(result))
+			return !!(typeof result == "string" && cardModel.Authorization.verify(result))
 		}
 	}
 }

@@ -1,6 +1,6 @@
 import * as gracely from "gracely"
 import * as authly from "authly"
-import * as cardfunc from "@cardfunc/model"
+import * as cardModel from "@payfunc/model-card"
 import * as Authorization from "../Authorization"
 import * as Card from "../Card"
 import { addCommand } from "./module"
@@ -20,12 +20,12 @@ addCommand({
 			currency: "SEK",
 			card,
 		}
-		const token = connection && cardfunc.Authorization.Creatable.is(creatable) && await Authorization.create(connection, creatable, true)
+		const token = connection && cardModel.Authorization.Creatable.is(creatable) && await Authorization.create(connection, creatable, true)
 		let result: boolean
 		if (result = !gracely.Error.is(token)) {
-			const a = token && await cardfunc.Authorization.verify(token) || undefined
+			const a = token && await cardModel.Authorization.verify(token) || undefined
 			const c = connection && token && await Authorization.cancel(connection, token)
-			result = cardfunc.Authorization.Creatable.is(creatable) && cardfunc.Authorization.is(a) && a.amount == creatable.amount && cardfunc.Cancel.is(c)
+			result = cardModel.Authorization.Creatable.is(creatable) && cardModel.Authorization.is(a) && a.amount == creatable.amount && cardModel.Cancel.is(c)
 		}
 		return result
 	}

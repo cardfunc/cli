@@ -1,6 +1,6 @@
 import * as gracely from "gracely"
 import * as authly from "authly"
-import * as cardfunc from "@cardfunc/model"
+import * as cardModel from "@payfunc/model-card"
 import * as Authorization from "../Authorization"
 import * as Card from "../Card"
 import { addCommand } from "./module"
@@ -19,7 +19,7 @@ addCommand({
 			currency: "SEK",
 			card,
 		}
-		const token = connection && cardfunc.Authorization.Creatable.is(creatable) && await Authorization.create(connection, creatable, true)
+		const token = connection && cardModel.Authorization.Creatable.is(creatable) && await Authorization.create(connection, creatable, true)
 		return gracely.client.malformedContent.is(token) &&
 			token.content.property == "card.pan" &&
 			token.content.description == "Invalid card number."

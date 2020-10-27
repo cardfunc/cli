@@ -1,20 +1,20 @@
 {
- "name": "@cardfunc/cli",
- "version": "0.0.37",
- "description": "CardFunc command line interface.",
- "author": "CardFunc",
+ "name": "@payfunc/cli-card",
+ "version": "0.1.1",
+ "description": "PayFunc command line interface for tokenizing.",
+ "author": "PayFunc",
  "license": "MIT",
  "repository": {
   "type": "git",
-  "url": "git+https://github.com/cardfunc/cli"
+  "url": "git+https://github.com/payfunc/cli-card"
  },
  "bugs": {
-  "url": "https://github.com/cardfunc/cli/issues"
+  "url": "https://github.com/payfunc/cli-card/issues"
  },
- "homepage": "https://github.com/cardfunc/cli#readme",
+ "homepage": "https://github.com/payfunc/cli-card#readme",
  "private": false,
  "bin": {
-  "cardfunc": "dist/run.js"
+  "payfunc-card": "dist/run.js"
  },
  "main": "dist/index.js",
  "typings": "dist/index.d.ts",
@@ -56,7 +56,7 @@
   "clean": "rm -rf dist node_modules coverage"
  },
  "dependencies": {
-  "@cardfunc/model": "0.0.77",
+  "@payfunc/model-card": "0.1.1",
   "@types/dotenv": "^8.2.0",
   "authly": "0.0.40",
   "dotenv": "^8.2.0",

@@ -6,7 +6,7 @@ import * as paramly from "paramly"
 import * as configuration from "./package.json"
 import * as cli from "./index"
 
-export const application = new paramly.Application("CardFunc CLI", "cardfunc", configuration.version, [
+export const application = new paramly.Application("PayFunc Card Tokenizing CLI", "payfunc-card", configuration.version, [
 		{
 			short: "s",
 			long: "server",
@@ -22,7 +22,7 @@ export const application = new paramly.Application("CardFunc CLI", "cardfunc", c
 			usage: "<url>",
 		},
 	],
-	async f => cli.Connection.create("cardfunc", (f.s ?? f.server)?.[0] ?? "default", (f.u ?? f.url)?.[0])
+	async f => cli.Connection.create("payfunc-card", (f.s ?? f.server)?.[0] ?? "default", (f.u ?? f.url)?.[0])
 )
 application.register(cli.Authorization.module, "authorization", "a")
 application.register(cli.Card.module, "card", "c")
