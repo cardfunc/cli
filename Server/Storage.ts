@@ -11,24 +11,26 @@ export class Storage {
 		this.initialized = this.backend.init()
 	}
 	async save(merchant: Credentials): Promise<boolean> {
-		return !!(await this.initialized && await this.backend.setItem(merchant.name, merchant)).file
+		return !!((await this.initialized) && (await this.backend.setItem(merchant.name, merchant))).file
 	}
 	async load(name: string): Promise<Credentials | undefined> {
-		return name == "env" ? {
-			name: "env",
-			keys: {
-				private: process.env.privateKey!,
-				public: process.env.publicKey!,
-				agent: process.env.agentKey!,
-			},
-			administrator: { user: process.env.adminUser!, password: process.env.adminPassword! },
-		} : await this.initialized && this.backend.getItem(name)
+		return name == "env"
+			? {
+					name: "env",
+					keys: {
+						private: process.env.privateKey ?? undefined,
+						public: process.env.publicKey ?? undefined,
+						agent: process.env.agentKey ?? undefined,
+					},
+					administrator: { user: process.env.adminUser ?? undefined, password: process.env.adminPassword ?? undefined },
+			  }
+			: (await this.initialized) && this.backend.getItem(name)
 	}
 	async list(): Promise<string[]> {
-		return await this.initialized && this.backend.keys()
+		return (await this.initialized) && this.backend.keys()
 	}
 	async remove(name: string): Promise<boolean> {
-		const result = await this.initialized && await this.backend.removeItem(name)
+		const result = (await this.initialized) && (await this.backend.removeItem(name))
 		return result.removed
 	}
 	private static opened: { [name: string]: Storage } = {}

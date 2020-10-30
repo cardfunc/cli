@@ -14,17 +14,23 @@ addCommand({
 			currency: "SEK",
 			card: {
 				pan: "4111111111111111",
-				expires: [ 2, 22 ],
+				expires: [2, 22],
 				csc: "987",
 			},
 		}
-		const token = connection && await Authorization.create(connection, creatable, true)
-		if (result = !gracely.Error.is(token)) {
-			const a = token && await cardModel.Authorization.verify(token) || undefined
-			const c = connection && token && await Authorization.capture(connection, token)
-			const r = connection && token && await Authorization.refund(connection, token)
-			result = cardModel.Authorization.is(a) && cardModel.Capture.is(c) && cardModel.Refund.is(r) && creatable.amount == a.amount && creatable.amount == c.amount && creatable.amount == r.amount
+		const token = connection && (await Authorization.create(connection, creatable, true))
+		if ((result = !gracely.Error.is(token))) {
+			const a = (token && (await cardModel.Authorization.verify(token))) || undefined
+			const c = connection && token && (await Authorization.capture(connection, token))
+			const r = connection && token && (await Authorization.refund(connection, token))
+			result =
+			cardModel.Authorization.is(a) &&
+				cardModel.Capture.is(c) &&
+				cardModel.Refund.is(r) &&
+				creatable.amount == a.amount &&
+				creatable.amount == c.amount &&
+				creatable.amount == r.amount
 		}
 		return result
-	}
+	},
 })
