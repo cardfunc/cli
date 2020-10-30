@@ -1,10 +1,10 @@
 import * as authly from "authly"
 import * as gracely from "gracely"
 import * as paramly from "paramly"
-import * as cardfunc from "@cardfunc/model"
+import * as cardModel from "@payfunc/model-card"
 import { Connection } from "../Connection"
 
-export async function update(connection: Connection, token: authly.Token, card: Partial<cardfunc.Card.Creatable>): Promise<authly.Token | gracely.Error> {
+export async function update(connection: Connection, token: authly.Token, card: Partial<cardModel.Card.Creatable>): Promise<authly.Token | gracely.Error> {
 		return connection.patch<authly.Token>("public", `card/${ token }`, card)
 }
 export namespace update {
@@ -17,13 +17,13 @@ export namespace update {
 			["<token> <pares>", "Update pares."],
 		],
 		execute: async (connection, argument, flags) => {
-			const card: Partial<cardfunc.Card.Creatable> = {}
+			const card: Partial<cardModel.Card.Creatable> = {}
 			if (argument.length == 2)
 				card.pares = argument[1] == "auto" ? undefined : argument[1]
 			else {
 				const expires = argument[2].split("/", 2).map(e => Number.parseInt(e))
 				card.pan = argument[1]
-				if (cardfunc.Card.Expires.is(expires))
+				if (cardModel.Card.Expires.is(expires))
 					card.expires = expires
 				card.csc = argument[3]
 				card.pares = argument[4] == "auto" || !argument[4] ? undefined : argument[4]

@@ -1,10 +1,10 @@
 import * as gracely from "gracely"
 import * as paramly from "paramly"
-import * as cardfunc from "@cardfunc/model"
+import * as cardModel from "@payfunc/model-card"
 import { Connection } from "../Connection"
 
-export function refund(connection: Connection, authorization: string, amount?: number): Promise<cardfunc.Refund | gracely.Error> {
-	return connection.post<cardfunc.Refund>("private", `authorization/${ authorization }/refund`, amount ? { amount } : {})
+export function refund(connection: Connection, authorization: string, amount?: number): Promise<cardModel.Refund | gracely.Error> {
+	return connection.post<cardModel.Refund>("private", `authorization/${ authorization }/refund`, amount ? { amount } : {})
 }
 export namespace refund {
 	export const command: paramly.Command<Connection> = {
@@ -18,7 +18,7 @@ export namespace refund {
 			const result = connection &&
 				await refund(connection, argument[0], amount)
 			console.info(JSON.stringify(result, undefined, "\t"))
-			return cardfunc.Refund.is(result)
+			return cardModel.Refund.is(result)
 		}
 	}
 }

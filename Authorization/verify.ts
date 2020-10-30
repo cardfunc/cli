@@ -1,10 +1,10 @@
 import * as paramly from "paramly"
-import * as cardfunc from "@cardfunc/model"
+import * as cardModel from "@payfunc/model-card"
 import { Connection } from "../Connection"
 
 
-export function verify(authorization: string): Promise<cardfunc.Authorization | undefined> {
-	return cardfunc.Authorization.verify(authorization)
+export function verify(authorization: string): Promise<cardModel.Authorization | undefined> {
+	return cardModel.Authorization.verify(authorization)
 }
 export namespace verify {
 	export const command: paramly.Command<Connection> = {

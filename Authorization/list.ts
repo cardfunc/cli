@@ -1,10 +1,10 @@
 import * as gracely from "gracely"
 import * as paramly from "paramly"
-import * as cardfunc from "@cardfunc/model"
+import * as cardModel from "@payfunc/model-card"
 import { Connection } from "../Connection"
 
-export function list(connection: Connection): Promise<cardfunc.Authorization[] | gracely.Error> {
-	return connection.get<cardfunc.Authorization[]>("private", "authorization")
+export function list(connection: Connection): Promise<cardModel.Authorization[] | gracely.Error> {
+	return connection.get<cardModel.Authorization[]>("private", "authorization")
 }
 export namespace list {
 	export const command: paramly.Command<Connection> = {

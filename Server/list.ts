@@ -15,7 +15,7 @@ export namespace list {
 		execute: async (connection, argument, flags) => {
 			let result: boolean
 			if (result = !!connection) {
-				console.info("cardfunc --server <server> <module> <command>\n\nServers:")
+				console.info("payfunc-card --server <server> <module> <command>\n\nServers:")
 				console.info((await list(connection)).join("\n") + "\n")
 			}
 			return result
