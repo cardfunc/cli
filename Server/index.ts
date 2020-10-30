@@ -14,11 +14,4 @@ const serverModule = {
 	},
 }
 
-export {
-	Credentials,
-	Storage,
-	add,
-	list,
-	remove,
-	serverModule as module,
-}
+export { Credentials, Storage, add, list, remove, serverModule as module }

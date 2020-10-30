@@ -3,7 +3,15 @@ import * as paramly from "paramly"
 import { Connection } from "../Connection"
 import { Credentials } from "./Credentials"
 
-export async function add(connection: Connection, name: string, privateKey: authly.Token, publicKey: authly.Token, agentKey: authly.Token, user?: string, password?: string): Promise<boolean> {
+export async function add(
+	connection: Connection,
+	name: string,
+	privateKey: authly.Token,
+	publicKey: authly.Token,
+	agentKey: authly.Token,
+	user?: string,
+	password?: string
+): Promise<boolean> {
 	const credential: Credentials = { name, keys: { private: privateKey, public: publicKey, agent: agentKey } }
 	if (user && password)
 		credential.administrator = { user, password }
@@ -18,6 +26,7 @@ export namespace add {
 			["<name> <private key> <public key> <agent key>", "Add server without admin user."],
 			["<name> <private key> <public key> <agent key> <user> <password>", "Add server and admin user."],
 		],
-		execute: async (connection, argument, flags) => !!connection && add(connection, argument[0], argument[1], argument[2], argument[3], argument[4], argument[5]),
+		execute: async (connection, argument, flags) =>
+			!!connection && add(connection, argument[0], argument[1], argument[2], argument[3], argument[4], argument[5]),
 	}
 }

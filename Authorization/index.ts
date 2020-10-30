@@ -18,12 +18,4 @@ export const authorizationModule = {
 	},
 }
 
-export {
-	cancel,
-	capture,
-	create,
-	list,
-	refund,
-	verify,
-	authorizationModule as module,
-}
+export { cancel, capture, create, list, refund, verify, authorizationModule as module }

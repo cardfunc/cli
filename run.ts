@@ -6,7 +6,11 @@ import * as paramly from "paramly"
 import * as configuration from "./package.json"
 import * as cli from "./index"
 
-export const application = new paramly.Application("PayFunc Card Tokenizing CLI", "payfunc-card", configuration.version, [
+export const application = new paramly.Application(
+	"PayFunc Card Tokenizing CLI",
+	"payfunc-card",
+	configuration.version,
+	[
 		{
 			short: "s",
 			long: "server",
@@ -30,4 +34,7 @@ application.register(cli.Pares.module, "pares", "p")
 application.register(cli.Server.module, "server", "s")
 application.register(cli.Test.module, "test", "t")
 
-application.run(process.argv).then(result => process.exit(result ? 0 : 1), _ => process.exit(1))
+application.run(process.argv).then(
+	result => process.exit(result ? 0 : 1),
+	_ => process.exit(1)
+)

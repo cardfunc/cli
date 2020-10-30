@@ -10,8 +10,4 @@ const cardModule = {
 	},
 }
 
-export {
-	create,
-	update,
-	cardModule as module
-}
+export { create, update, cardModule as module }

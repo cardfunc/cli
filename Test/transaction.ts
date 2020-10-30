@@ -22,8 +22,12 @@ addCommand({
 			currency: "SEK",
 			card,
 		}
-		const token = connection && cardModel.Authorization.Creatable.is(creatable) && await Authorization.create(connection, creatable, true)
-		return (gracely.client.malformedContent.is(token) &&
+		const token =
+			connection &&
+			cardModel.Authorization.Creatable.is(creatable) &&
+			(await Authorization.create(connection, creatable, true))
+		return (
+			gracely.client.malformedContent.is(token) &&
 			token.content.property == "card.pan" &&
 			token.content.description == "Invalid card number."
 		)

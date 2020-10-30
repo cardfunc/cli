@@ -5,11 +5,4 @@ import * as Pares from "./Pares"
 import * as Server from "./Server"
 import * as Test from "./Test"
 
-export {
-	Authorization,
-	Card,
-	Connection,
-	Pares,
-	Server,
-	Test,
-}
+export { Authorization, Card, Connection, Pares, Server, Test }

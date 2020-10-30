@@ -4,8 +4,11 @@ import * as paramly from "paramly"
 import * as cardModel from "@payfunc/model-card"
 import { Connection } from "../Connection"
 
-export async function create(connection: Connection, card: cardModel.Card.Creatable): Promise<authly.Token | gracely.Error> {
-		return connection.post<authly.Token>("public", "card", card)
+export async function create(
+	connection: Connection,
+	card: cardModel.Card.Creatable
+): Promise<authly.Token | gracely.Error> {
+	return connection.post<authly.Token>("public", "card", card)
 }
 export namespace create {
 	export const command: paramly.Command<Connection> = {
@@ -17,16 +20,17 @@ export namespace create {
 		],
 		execute: async (connection, argument, flags) => {
 			const expires = argument[1].split("/", 2).map(e => Number.parseInt(e))
-			const result = connection &&
+			const result =
+				connection &&
 				cardModel.Card.Expires.is(expires) &&
-				await create(connection, {
+				(await create(connection, {
 					pan: argument[0],
 					expires,
 					csc: argument[2],
 					pares: argument[3] == "auto" || !argument[3] ? undefined : argument[3],
-				})
+				}))
 			console.info(typeof result == "string" ? result : JSON.stringify(result, undefined, "\t"))
 			return !!(typeof result == "string" && authly.Token.is(result)) // TODO: change to cardModel.card.verify
-		}
+		},
 	}
 }

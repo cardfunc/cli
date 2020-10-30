@@ -24,7 +24,7 @@ addCommand({
 			const c = connection && token && (await Authorization.capture(connection, token))
 			const r = connection && token && (await Authorization.refund(connection, token))
 			result =
-			cardModel.Authorization.is(a) &&
+				cardModel.Authorization.is(a) &&
 				cardModel.Capture.is(c) &&
 				cardModel.Refund.is(r) &&
 				creatable.amount == a.amount &&

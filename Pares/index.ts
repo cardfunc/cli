@@ -9,8 +9,4 @@ const paresModule = {
 	},
 }
 
-export {
-	get,
-	missing,
-	paresModule as module,
-}
+export { get, missing, paresModule as module }

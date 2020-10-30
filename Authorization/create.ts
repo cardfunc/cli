@@ -9,7 +9,11 @@ import * as Card from "../Card"
 import * as Pares from "../Pares"
 import { post } from "./post"
 
-export async function create(connection: Connection, authorization: cardModel.Authorization.Creatable, auto3d: boolean): Promise<authly.Token | gracely.Error> {
+export async function create(
+	connection: Connection,
+	authorization: cardModel.Authorization.Creatable,
+	auto3d: boolean
+): Promise<authly.Token | gracely.Error> {
 	const response = await post(connection, authorization)
 	let result: authly.Token | gracely.Error
 	if (!Pares.missing(response))
@@ -22,7 +26,11 @@ export async function create(connection: Connection, authorization: cardModel.Au
 		} else
 			result = await post(connection, { ...authorization, pares })
 	} else {
-		await open(`${ connection.url }/redirect/post?target=${ encodeURIComponent(response.content.url) }&PaReq=${ encodeURIComponent(response.content.pareq) }&MD=MD&TermUrl=${ encodeURIComponent(connection.url) }/emv3d/done/cli`)
+		await open(
+			`${connection.url}/redirect/post?target=${encodeURIComponent(response.content.url)}&PaReq=${encodeURIComponent(
+				response.content.pareq
+			)}&MD=MD&TermUrl=${encodeURIComponent(connection.url)}/emv3d/done/cli`
+		)
 		result = response
 	}
 	return result
@@ -36,30 +44,37 @@ export namespace create {
 			["13.37 EUR <card token> <description>", "Create an authorization for EUR 13.37 using card token."],
 			["13.37 EUR 4111111111111111 2/22 987", "Create an authorization for EUR 13.37 with 3D Secure in browser."],
 			["13.37 EUR 4111111111111111 2/22 987 auto", "Create an authorization for EUR 13.37."],
-			["13.37 EUR 4111111111111111 2/22 987 <pares>", "Create an authorization for EUR 13.37 with 3D Secure."]
+			["13.37 EUR 4111111111111111 2/22 987 <pares>", "Create an authorization for EUR 13.37 with 3D Secure."],
 		],
 		execute: async (connection, argument, flags) => {
 			const amount = Number.parseFloat(argument[0])
 			const currency = argument[1]
 			const expires = argument.length > 3 ? argument[3].split("/", 2).map(e => Number.parseInt(e)) : undefined
 			const token = argument[2]
-			const card: authly.Token | cardModel.Card.Creatable | undefined = authly.Token.is(token) ? token : cardModel.Card.Expires.is(expires) ? {
-				pan: argument[2],
-				expires,
-				csc: argument[4],
-			} : undefined
-			const authorization = card && isoly.Currency.is(currency) && {
-				number: authly.Identifier.generate(4),
-				amount, currency,
-				card,
-				pares: argument.length == 3 && argument[5] == "auto" ? undefined : argument[5],
-				descriptor: argument[authly.Token.is(argument[3]) ? 4 : 6] ?? undefined,
-			}
-			const result = connection &&
+			const card: authly.Token | cardModel.Card.Creatable | undefined = authly.Token.is(token)
+				? token
+				: cardModel.Card.Expires.is(expires)
+				? {
+						pan: argument[2],
+						expires,
+						csc: argument[4],
+				  }
+				: undefined
+			const authorization = card &&
+				isoly.Currency.is(currency) && {
+					number: authly.Identifier.generate(4),
+					amount,
+					currency,
+					card,
+					pares: argument.length == 3 && argument[5] == "auto" ? undefined : argument[5],
+					descriptor: argument[authly.Token.is(argument[3]) ? 4 : 6] ?? undefined,
+				}
+			const result =
+				connection &&
 				cardModel.Authorization.Creatable.is(authorization) &&
-				await create(connection, authorization, argument[5] == "auto")
+				(await create(connection, authorization, argument[5] == "auto"))
 			console.info(typeof result == "string" ? result : JSON.stringify(result, undefined, "\t"))
 			return !!(typeof result == "string" && cardModel.Authorization.verify(result))
-		}
+		},
 	}
 }
