@@ -23,6 +23,4 @@ import "./unsupported"
 import "./violation"
 import { module } from "./module"
 
-export {
-	module,
-}
+export { module }
