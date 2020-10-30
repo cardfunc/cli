@@ -28,9 +28,9 @@
               }
             ],
             "fileLocation": ["relative", "/"],
-            "owner": "tslint",
+            "owner": "eslint",
             "severity": "warning",
-            "source": "tslint"
+            "source": "eslint"
           }
         ]
       },

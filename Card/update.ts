@@ -4,8 +4,12 @@ import * as paramly from "paramly"
 import * as cardModel from "@payfunc/model-card"
 import { Connection } from "../Connection"
 
-export async function update(connection: Connection, token: authly.Token, card: Partial<cardModel.Card.Creatable>): Promise<authly.Token | gracely.Error> {
-		return connection.patch<authly.Token>("public", `card/${ token }`, card)
+export async function update(
+	connection: Connection,
+	token: authly.Token,
+	card: Partial<cardModel.Card.Creatable>
+): Promise<authly.Token | gracely.Error> {
+	return connection.patch<authly.Token>("public", `card/${token}`, card)
 }
 export namespace update {
 	export const command: paramly.Command<Connection> = {
@@ -28,9 +32,9 @@ export namespace update {
 				card.csc = argument[3]
 				card.pares = argument[4] == "auto" || !argument[4] ? undefined : argument[4]
 			}
-			const result = connection && await update(connection, argument[0], card)
+			const result = connection && (await update(connection, argument[0], card))
 			console.info(typeof result == "string" ? result : JSON.stringify(result, undefined, "\t"))
 			return !gracely.Error.is(result)
-		}
+		},
 	}
 }
