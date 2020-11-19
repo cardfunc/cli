@@ -121,11 +121,13 @@ export class Connection {
 		if (typeof server == "string")
 			server = await storage.load(server)
 		const payfuncKey = server && (await authly.Verifier.create("public").verify(server.keys.public))
-		const cardfuncKey = server && (await cardModel.Merchant.Key.KeyInfo.unpack(server.keys.public, "public"))
 		return new Connection(
 			storage,
 			server,
-			url ?? (storage.name == "cardModel" ? cardfuncKey?.card.url : payfuncKey?.iss)
+			url ??
+				(storage.name == "payfunc-card"
+					? (server && (await cardModel.Merchant.Key.extractCardUrl(server.keys.public, "public"))) ?? ""
+					: payfuncKey?.iss)
 		)
 	}
 }
