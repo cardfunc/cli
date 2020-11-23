@@ -21,15 +21,7 @@ addCommand({
 		const token = connection && (await Authorization.create(connection, creatable, true))
 		if ((result = !gracely.Error.is(token))) {
 			const a = (token && (await cardModel.Authorization.verify(token))) || undefined
-			const c = connection && token && (await Authorization.capture(connection, token))
-			const r = connection && token && (await Authorization.refund(connection, token))
-			result =
-				cardModel.Authorization.is(a) &&
-				cardModel.Capture.is(c) &&
-				cardModel.Refund.is(r) &&
-				creatable.amount == a.amount &&
-				creatable.amount == c.amount &&
-				creatable.amount == r.amount
+			result = cardModel.Authorization.is(a) && creatable.amount == a.amount
 		}
 		return result
 	},

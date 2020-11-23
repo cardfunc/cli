@@ -29,12 +29,8 @@ addCommand({
 		let result: boolean
 		if ((result = !gracely.Error.is(token))) {
 			const a = (token && (await cardModel.Authorization.verify(token))) || undefined
-			const c = connection && token && (await Authorization.cancel(connection, token))
 			result =
-				cardModel.Authorization.Creatable.is(creatable) &&
-				cardModel.Authorization.is(a) &&
-				a.amount == creatable.amount &&
-				cardModel.Cancel.is(c)
+				cardModel.Authorization.Creatable.is(creatable) && cardModel.Authorization.is(a) && a.amount == creatable.amount
 		}
 		return result
 	},
