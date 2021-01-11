@@ -27,7 +27,7 @@ export namespace create {
 					pan: argument[0],
 					expires,
 					csc: argument[2],
-					pares: argument[3] == "auto" || !argument[3] ? undefined : argument[3],
+					verification: argument[3] == "auto" || !argument[3] ? undefined : { type: "pares", data: argument[3] },
 				}))
 			console.info(typeof result == "string" ? result : JSON.stringify(result, undefined, "\t"))
 			return !!(typeof result == "string" && authly.Token.is(result)) // TODO: change to cardModel.card.verify

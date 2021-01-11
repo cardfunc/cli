@@ -23,14 +23,14 @@ export namespace update {
 		execute: async (connection, argument, flags) => {
 			const card: Partial<cardModel.Card.Creatable> = {}
 			if (argument.length == 2)
-				card.pares = argument[1] == "auto" ? undefined : argument[1]
+				card.verification = argument[1] == "auto" ? undefined : { type: "pares", data: argument[1] }
 			else {
 				const expires = argument[2].split("/", 2).map(e => Number.parseInt(e))
 				card.pan = argument[1]
 				if (cardModel.Card.Expires.is(expires))
 					card.expires = expires
 				card.csc = argument[3]
-				card.pares = argument[4] == "auto" || !argument[4] ? undefined : argument[4]
+				card.verification = argument[4] == "auto" || !argument[4] ? undefined : { type: "pares", data: argument[4] }
 			}
 			const result = connection && (await update(connection, argument[0], card))
 			console.info(typeof result == "string" ? result : JSON.stringify(result, undefined, "\t"))
