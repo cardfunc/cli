@@ -1,6 +1,6 @@
 {
  "name": "@payfunc/cli-card",
- "version": "0.1.6",
+ "version": "0.1.7",
  "description": "PayFunc command line interface for tokenizing.",
  "author": "PayFunc",
  "license": "MIT",
