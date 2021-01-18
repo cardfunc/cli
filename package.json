@@ -57,18 +57,22 @@
   "clean": "rm -rf dist node_modules coverage"
  },
  "dependencies": {
-  "@payfunc/model-card": "0.1.10",
+  "@payfunc/model-card": "0.1.12",
+  "@payfunc/model": "0.2.39",
+  "@payfunc/service-ch3d1": "0.0.29",
+  "@payfunc/service-ch3d2": "0.0.32",
+  "@payfunc/service-clearhaus": "0.0.19",
   "@types/dotenv": "^8.2.0",
   "authly": "0.0.40",
   "dotenv": "^8.2.0",
   "gracely": "0.0.33",
-  "isoly": "0.0.15",
   "node-fetch": "^2.6.1",
   "node-persist": "^3.1.0",
   "open": "^7.0.4",
   "paramly": "0.0.5"
  },
  "devDependencies": {
+  "@types/form-urlencoded": "^2.0.1",
   "@types/jest": "^26.0.4",
   "@types/node": "^14.0.23",
   "@types/node-fetch": "^2.5.7",
@@ -80,6 +84,7 @@
   "babel-jest": "^26.1.0",
   "eslint": "^7.7.0",
   "eslint-plugin-prettierx": "github:nilssonemma/eslint-plugin-prettierx#master",
+  "isoly": "0.0.15",
   "jest": "^26",
   "prettierx": "github:simonmika/prettierx#newline-before-clause",
   "ts-jest": "^26.1.3",
