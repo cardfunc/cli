@@ -61,7 +61,7 @@
   "@payfunc/model": "0.2.39",
   "@payfunc/service-ch3d1": "0.0.29",
   "@payfunc/service-ch3d2": "0.0.32",
-  "@payfunc/service-clearhaus": "0.0.19",
+  "@payfunc/service-clearhaus": "payfunc/service-clearhaus#backend-worker",
   "@types/dotenv": "^8.2.0",
   "authly": "0.0.40",
   "dotenv": "^8.2.0",

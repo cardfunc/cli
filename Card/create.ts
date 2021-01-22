@@ -19,6 +19,7 @@ export namespace create {
 			["4111111111111111 2/22 987 <pares>", "Create a new card with PaRes."],
 		],
 		execute: async (connection, argument, flags) => {
+			console.info("does this run")
 			const expires = argument[1].split("/", 2).map(e => Number.parseInt(e))
 			const result =
 				connection &&

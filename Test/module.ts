@@ -1,5 +1,6 @@
 import * as paramly from "paramly"
 import { Connection } from "../Connection"
+import { simple } from "./simple"
 
 const commands: { [command: string]: paramly.Command<Connection> } = {}
 
@@ -10,7 +11,9 @@ export function addCommand(command: paramly.Command<Connection>) {
 export const module: paramly.Module<Connection> = {
 	name: "test",
 	description: "Runs tests.",
-	commands,
+	commands: {
+		simple: simple.command,
+	},
 }
 
 addCommand({

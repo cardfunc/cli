@@ -4,6 +4,7 @@ import * as authly from "authly"
 import * as paramly from "paramly"
 import * as model from "@payfunc/model"
 import * as cardModel from "@payfunc/model-card"
+import { default as fetch } from "node-fetch"
 import { Connection } from "../Connection"
 import * as clearhaus from "@payfunc/service-clearhaus"
 // import { create as createCard } from "../Card"
@@ -14,12 +15,61 @@ export async function create(
 	request: clearhaus.api.Authorization.Request,
 	card: authly.Token
 ): Promise<clearhaus.api.Authorization.Response | gracely.Error> {
+	console.log("running create")
 	const key = connection.credentials?.keys.public
 	const merchant = key ? await model.Key.unpack(key, "public") : undefined
-	return key && merchant
-		? await clearhaus.authorization.create(key, merchant, request, card)
-		: gracely.client.unauthorized()
+	console.log("key, merchant, request, card: ", key, { ...merchant, token: undefined }, request, card)
+	//const result = key && merchant ? await outerHelper(key, merchant, request, card) : gracely.client.unauthorized()
+	const result =
+		key && merchant ? await clearhaus.authorization.create(key, merchant, request, card) : gracely.client.unauthorized()
+	console.log("const result: ", result)
+	return result
 	// return connection.post<clearhaus.api.Authorization.Response>("public", "clearhaus", clearhaus)
+}
+interface Configuration {
+	url: string
+	key: string
+}
+async function outerHelper(
+	key: authly.Token,
+	merchant: model.Key,
+	request: clearhaus.api.Authorization.Request,
+	token: authly.Token
+): Promise<clearhaus.api.Authorization.Response | gracely.Error> {
+	console.log("a", merchant.card, merchant.card?.acquirer.protocol)
+	return !merchant.card || merchant.card.acquirer.protocol != "clearhaus"
+		? gracely.client.unauthorized()
+		: outerPost<clearhaus.api.Authorization.Request, clearhaus.api.Authorization.Response | gracely.Error>(
+				{ url: merchant.card.url, key },
+				request,
+				token
+		  )
+}
+export async function outerPost<Request, Response>(
+	configuration: Configuration,
+	request: Request,
+	token: authly.Token
+): Promise<Response | gracely.Error> {
+	console.log("b")
+	return post(configuration, `card/${token}/clearhaus/authorization`, request)
+}
+async function post<Request, Response>(
+	configuration: Configuration,
+	endpoint: string,
+	request: Request
+): Promise<Response | gracely.Error> {
+	console.log("c1")
+	const response = await fetch(configuration.url + "/" + endpoint, {
+		method: "POST",
+		headers: { "Content-Type": "application/json; charset=utf-8", authorization: "Bearer " + configuration.key },
+		body: JSON.stringify(request),
+	}).catch(_ => undefined)
+	console.log("c2")
+	return !response
+		? gracely.server.unavailable()
+		: response.headers.get("Content-Type")?.startsWith("application/json")
+		? response.json()
+		: response.text()
 }
 export namespace create {
 	export const command: paramly.Command<Connection> = {
@@ -37,11 +87,11 @@ export namespace create {
 			if (argument.length < 3 || argument.length > 5)
 				result = gracely.client.invalidContent("parameters", "3 or 4 arguments required.")
 			else if (
-				typeof Number.parseInt(argument[1]) != "number" ||
-				isNaN(Number.parseInt(argument[1])) ||
-				!isoly.Currency.is(argument[2]) ||
-				!authly.Identifier.is(argument[3]) ||
-				(argument.length == 5 && (argument[4] == "true" || argument[4] == "false"))
+				typeof Number.parseInt(argument[0]) != "number" ||
+				isNaN(Number.parseInt(argument[0])) ||
+				!isoly.Currency.is(argument[1]) ||
+				!authly.Identifier.is(argument[2]) ||
+				(argument.length == 4 && !(argument[3] == "true" || argument[3] == "false"))
 			) {
 				result = gracely.client.invalidContent("parameters", "Invalid parameter data.")
 			} else {
@@ -53,19 +103,21 @@ export namespace create {
 						csc: "987",
 					}))
 				const request: clearhaus.api.Authorization.Request = {
-					amount: Number.parseInt(argument[1]),
-					currency: argument[2],
-					reference: argument[3],
+					amount: Number.parseInt(argument[0]),
+					currency: argument[1],
+					reference: argument[2],
 				}
-				if (argument.length == 5)
-					request.recurring = argument[4] == "true"
+				if (argument.length == 4)
+					request.recurring = argument[3] == "true"
+				console.info("card, request: ", card, request)
 				result =
-					!!connection && clearhaus.api.Authorization.Request.is(argument) && !!card && !gracely.Error.is(card)
+					!!connection && clearhaus.api.Authorization.Request.is(request) && !!card && !gracely.Error.is(card)
 						? await create(connection, request, card)
 						: gracely.client.invalidContent("parameters", "invalid input or unknown error")
+				console.info("result from clearhaus create: ", result)
 			}
-			console.info(typeof result == "string" ? result : JSON.stringify(result, undefined, "\t"))
-			return !!(typeof result == "string" && authly.Token.is(result))
+			console.info(result) //JSON.stringify(result, undefined, "\t"))
+			return !gracely.Error.is(result)
 		},
 	}
 }
