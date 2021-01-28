@@ -18,11 +18,7 @@ export async function get(
 			transactionId: request.content.details.data?.threeDSServerTransID ?? "",
 			acsTransactionID: request.content.details.data?.acsTransID ?? "",
 		}
-	const challengeNotificationUrl =
-		merchant.card.url.endsWith("7082") || merchant.card.url.endsWith("cardfunc.com")
-			? merchant.card.url + "/card/" + token + "/verification?mode=show&merchant=" + (merchant.card.id ?? merchant.sub)
-			: merchant.card.url + "/card/" + token + "/verification?mode=show"
-	let challengeData = authly.Base64.encode(
+	const challengeRequest = authly.Base64.encode(
 		JSON.stringify({
 			threeDSServerTransID: request.transactionId,
 			acsTransId: request.acsTransactionID,
@@ -36,19 +32,23 @@ export async function get(
 	const dialog3d = await utility.postForm(
 		request.url,
 		{
-			creq: challengeData,
+			creq: challengeRequest,
 		},
 		true
 	)
-	challengeData = (
+	const challengeResponse = (
 		await utility.postForm(dialog3d?.action, {
 			threeDSServerTransID: dialog3d?.threeDSServerTransID,
 			challengeStatus: "pass",
 		})
 	)?.cres
-	const cardToken = challengeData
+	const challengeNotificationUrl =
+		merchant.card.url.endsWith("7082") || merchant.card.url.endsWith("cardfunc.com")
+			? merchant.card.url + "/card/" + token + "/verification?mode=show&merchant=" + (merchant.card.id ?? merchant.sub)
+			: merchant.card.url + "/card/" + token + "/verification?mode=show"
+	const cardToken = challengeResponse
 		? await fetch(challengeNotificationUrl, {
-				body: querystring.encode({ cres: challengeData }),
+				body: querystring.encode({ cres: challengeResponse }),
 				method: "POST",
 				headers: { "content-type": "application/x-www-form-urlencoded" },
 		  })
@@ -64,9 +64,10 @@ export namespace get {
 			["<url> <transactionId> <acsTransID> <cardToken>", "Perform challenge 3D for given URL and transactionId."],
 		],
 		execute: async (connection, argument, flags) => {
-			const merchant = (await authly.Verifier.create("public").verify(
-				connection?.credentials?.keys.public
-			)) as model.Merchant
+			const merchant = await authly.Verifier.create<model.Merchant>().verify(
+				connection?.credentials?.keys.public,
+				"public"
+			)
 			const result =
 				merchant && argument.length > 3
 					? await get(

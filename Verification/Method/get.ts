@@ -21,7 +21,7 @@ export async function get(
 		merchant.card.url.endsWith("7082") || merchant.card.url.endsWith("cardfunc.com")
 			? merchant.card.url + "/card/" + token + "/verification?mode=show&merchant=" + (merchant.card.id ?? merchant.sub)
 			: merchant.card.url + "/card/" + token + "/verification?mode=show"
-	let methodData = authly.Base64.encode(
+	const methodRequest = authly.Base64.encode(
 		JSON.stringify({
 			threeDSServerTransID: request.transactionId,
 			threeDSMethodNotificationURL: methodNotificationUrl,
@@ -30,9 +30,9 @@ export async function get(
 		"="
 	)
 	await utility.postForm(request.url, {
-		threeDSMethodData: methodData,
+		threeDSMethodData: methodRequest,
 	})
-	methodData = authly.Base64.encode(
+	const methodResponse = authly.Base64.encode(
 		JSON.stringify({
 			threeDSServerTransID: request.transactionId,
 		}),
@@ -40,7 +40,7 @@ export async function get(
 		"="
 	)
 	const cardToken = await fetch(methodNotificationUrl, {
-		body: querystring.encode({ threeDSMethodData: methodData }),
+		body: querystring.encode({ threeDSMethodData: methodResponse }),
 		method: "POST",
 		headers: { "content-type": "application/x-www-form-urlencoded" },
 	})
@@ -53,9 +53,10 @@ export namespace get {
 		description: "Performs method 3D. Only works with 3D simulator.",
 		examples: [["<url> <transactionId>", "Perform method 3D for given URL and transactionId."]],
 		execute: async (connection, argument, flags) => {
-			const merchant = (await authly.Verifier.create("public").verify(
-				connection?.credentials?.keys.public
-			)) as model.Merchant
+			const merchant = await authly.Verifier.create<model.Merchant>().verify(
+				connection?.credentials?.keys.public,
+				"public"
+			)
 			const result =
 				merchant && argument.length > 2
 					? await get({ url: argument[0], transactionId: argument[1] }, merchant, argument[2])

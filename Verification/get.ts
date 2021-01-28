@@ -33,9 +33,10 @@ export namespace get {
 			],
 		],
 		execute: async (connection, argument, flags) => {
-			const merchant = (await authly.Verifier.create("public").verify(
-				connection?.credentials?.keys.public
-			)) as model.Merchant
+			const merchant = await authly.Verifier.create<model.Merchant>().verify(
+				connection?.credentials?.keys.public,
+				"public"
+			)
 			const result = merchant
 				? argument.length == 2
 					? await get({ url: argument[0], pareq: argument[1] })
