@@ -33,10 +33,19 @@ export async function get(
 		"url",
 		"="
 	)
-	const dialog3d = await utility.postForm(request.url, {
-		creq: challengeData,
-	})
-	challengeData = dialog3d?.cres ?? dialog3d?.CRes
+	const dialog3d = await utility.postForm(
+		request.url,
+		{
+			creq: challengeData,
+		},
+		true
+	)
+	challengeData = (
+		await utility.postForm(dialog3d?.action, {
+			threeDSServerTransID: dialog3d?.threeDSServerTransID,
+			challengeStatus: "pass",
+		})
+	)?.cres
 	const cardToken = challengeData
 		? await fetch(challengeNotificationUrl, {
 				body: querystring.encode({ cres: challengeData }),

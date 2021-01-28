@@ -1,3 +1,3 @@
-import { postForm } from "./postForm"
+import { postForm, extractFromHtml } from "./postForm"
 
-export { postForm }
+export { postForm, extractFromHtml }
