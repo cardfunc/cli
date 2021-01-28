@@ -4,6 +4,8 @@ import { Connection } from "../../Connection"
 import * as utility from "../../utility"
 import * as authly from "authly"
 import * as model from "@payfunc/model-card"
+import { default as fetch } from "node-fetch"
+import * as querystring from "querystring"
 
 export async function get(
 	request: { url: string; transactionId: string } | Method,
@@ -19,7 +21,7 @@ export async function get(
 		merchant.card.url.endsWith("7082") || merchant.card.url.endsWith("cardfunc.com")
 			? merchant.card.url + "/card/" + token + "/verification?mode=show&merchant=" + (merchant.card.id ?? merchant.sub)
 			: merchant.card.url + "/card/" + token + "/verification?mode=show"
-	const methodData = authly.Base64.encode(
+	let methodData = authly.Base64.encode(
 		JSON.stringify({
 			threeDSServerTransID: request.transactionId,
 			threeDSMethodNotificationURL: methodNotificationUrl,
@@ -27,10 +29,22 @@ export async function get(
 		"url",
 		"="
 	)
-	const dialog3d = await utility.postForm(request.url, {
+	await utility.postForm(request.url, {
 		threeDSMethodData: methodData,
 	})
-	return (await utility.postForm(request.url, { ...dialog3d }))?.threeDSMethodData
+	methodData = authly.Base64.encode(
+		JSON.stringify({
+			threeDSServerTransID: request.transactionId,
+		}),
+		"url",
+		"="
+	)
+	const cardToken = await fetch(methodNotificationUrl, {
+		body: querystring.encode({ threeDSMethodData: methodData }),
+		method: "POST",
+		headers: { "content-type": "application/x-www-form-urlencoded" },
+	})
+	return await cardToken?.text()
 }
 
 export namespace get {

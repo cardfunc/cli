@@ -8,6 +8,7 @@ export async function postForm(url: string, data: { [field: string]: string }): 
 		headers: { "content-type": "application/x-www-form-urlencoded" },
 	})
 	const body = response.ok && (await response.text())
+	console.log("postForm response, body: ", response, body)
 	if (!body)
 		console.error(await response.text())
 	result =

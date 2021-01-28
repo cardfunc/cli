@@ -26,10 +26,29 @@ export namespace get {
 	export const command: paramly.Command<Connection> = {
 		name: "get",
 		description: "Performs 3D. Only works with 3D simulator.",
-		examples: [["<url> <pareq> | <url> <transactionId> <merchantKey>", "Perform 3D for given URL and PaReq."]], //Fix somehow
+		examples: [
+			[
+				"<url> <pareq> | <url> <transactionId> <cardToken> | <url> <transactionId> <acsTransactionId> <cardToken>",
+				"Perform 3D for given URL and PaReq.",
+			],
+		],
 		execute: async (connection, argument, flags) => {
-			const result = argument.length == 2 ? await get({ url: argument[0], pareq: argument[1] }) : undefined
-			console.info(result)
+			const merchant = (await authly.Verifier.create("public").verify(
+				connection?.credentials?.keys.public
+			)) as model.Merchant
+			const result = merchant
+				? argument.length == 2
+					? await get({ url: argument[0], pareq: argument[1] })
+					: argument.length == 3
+					? await get({ url: argument[0], transactionId: argument[1] }, merchant, argument[2])
+					: argument.length == 4
+					? await get(
+							{ url: argument[0], transactionId: argument[1], ascTransactionId: argument[2] },
+							merchant,
+							argument[3]
+					  )
+					: undefined
+				: undefined
 			return !!result
 		},
 	}

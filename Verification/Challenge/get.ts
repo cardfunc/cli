@@ -4,9 +4,11 @@ import { Connection } from "../../Connection"
 import * as utility from "../../utility"
 import * as authly from "authly"
 import * as model from "@payfunc/model-card"
+import { default as fetch } from "node-fetch"
+import * as querystring from "querystring"
 
 export async function get(
-	request: { url: string; transactionId: string; acsTransID: string } | Challenge,
+	request: { url: string; transactionId: string; acsTransactionID: string } | Challenge,
 	merchant: model.Merchant & authly.Payload,
 	token: authly.Token
 ): Promise<string | undefined> {
@@ -14,24 +16,35 @@ export async function get(
 		request = {
 			url: request.content.details.url,
 			transactionId: request.content.details.data?.threeDSServerTransID ?? "",
-			acsTransID: request.content.details.data?.acsTransID ?? "",
+			acsTransactionID: request.content.details.data?.acsTransID ?? "",
 		}
 	const challengeNotificationUrl =
 		merchant.card.url.endsWith("7082") || merchant.card.url.endsWith("cardfunc.com")
 			? merchant.card.url + "/card/" + token + "/verification?mode=show&merchant=" + (merchant.card.id ?? merchant.sub)
 			: merchant.card.url + "/card/" + token + "/verification?mode=show"
-	const challengeData = authly.Base64.encode(
+	let challengeData = authly.Base64.encode(
 		JSON.stringify({
 			threeDSServerTransID: request.transactionId,
-			threeDSMethodNotificationURL: challengeNotificationUrl,
+			acsTransId: request.acsTransactionID,
+			messageVersion: "2.1.0",
+			messageType: "CReq",
+			challengeWindowSize: "01",
 		}),
 		"url",
 		"="
 	)
 	const dialog3d = await utility.postForm(request.url, {
-		threeDSMethodData: challengeData,
+		creq: challengeData,
 	})
-	return (await utility.postForm(request.url, { ...dialog3d }))?.threeDSMethodData
+	challengeData = dialog3d?.cres ?? dialog3d?.CRes
+	const cardToken = challengeData
+		? await fetch(challengeNotificationUrl, {
+				body: querystring.encode({ cres: challengeData }),
+				method: "POST",
+				headers: { "content-type": "application/x-www-form-urlencoded" },
+		  })
+		: undefined
+	return await cardToken?.text()
 }
 
 export namespace get {
@@ -47,7 +60,11 @@ export namespace get {
 			)) as model.Merchant
 			const result =
 				merchant && argument.length > 3
-					? await get({ url: argument[0], transactionId: argument[1], acsTransID: argument[2] }, merchant, argument[3])
+					? await get(
+							{ url: argument[0], transactionId: argument[1], acsTransactionID: argument[2] },
+							merchant,
+							argument[3]
+					  )
 					: undefined
 			console.info(result)
 			return !!result
