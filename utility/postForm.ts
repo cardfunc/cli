@@ -12,7 +12,6 @@ export async function postForm(
 		headers: { "content-type": "application/x-www-form-urlencoded" },
 	})
 	const body = response.ok && (await response.text())
-	console.log("postForm response, body: ", response, body)
 	if (!body)
 		console.error(await response.text())
 	result = body ? extractFromHtml(body, action) : {}
