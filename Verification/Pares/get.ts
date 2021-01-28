@@ -1,20 +1,11 @@
-import * as gracely from "gracely"
 import * as paramly from "paramly"
-import { Connection } from "../Connection"
-import * as utility from "../utility"
-import { missing } from "./missing"
+import { Pares } from "./index"
+import { Connection } from "../../Connection"
+import * as utility from "../../utility"
 
-export async function get(
-	request:
-		| { url: string; pareq: string }
-		| (gracely.Error & {
-				status: 400
-				type: "missing property"
-				content: { property: "pares"; type: "string"; url: string; pareq: string }
-		  })
-): Promise<string | undefined> {
-	if (missing(request))
-		request = request.content
+export async function get(request: { url: string; pareq: string } | Pares): Promise<string | undefined> {
+	if (Pares.is(request))
+		request = { url: request.content.details.url, pareq: request.content.details.data?.pareq ?? "" }
 	const dialog3d = await utility.postForm(request.url, {
 		TermUrl: "http://localhost",
 		PaReq: request.pareq,
