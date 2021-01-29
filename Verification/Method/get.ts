@@ -6,6 +6,7 @@ import * as authly from "authly"
 import * as model from "@payfunc/model-card"
 import { default as fetch } from "node-fetch"
 import * as querystring from "querystring"
+import { Verification } from "../index"
 
 export async function get(
 	request: { url: string; transactionId: string } | Method,
@@ -17,10 +18,7 @@ export async function get(
 			url: request.content.details.url,
 			transactionId: request.content.details.data?.threeDSServerTransID ?? "",
 		}
-	const methodNotificationUrl =
-		merchant.card.url.endsWith("7082") || merchant.card.url.endsWith("cardfunc.com")
-			? merchant.card.url + "/card/" + token + "/verification?mode=show&merchant=" + (merchant.card.id ?? merchant.sub)
-			: merchant.card.url + "/card/" + token + "/verification?mode=show"
+	const methodNotificationUrl = await Verification.generateNotificationUrl(merchant, token)
 	const methodRequest = authly.Base64.encode(
 		JSON.stringify({
 			threeDSServerTransID: request.transactionId,

@@ -3,6 +3,8 @@ import { Error as VerificationError } from "./Error"
 import { Pares as VerificationPares } from "./Pares"
 import { Method as VerificationMethod } from "./Method"
 import { Challenge as VerificationChallenge } from "./Challenge"
+import * as model from "@payfunc/model-card"
+import * as authly from "authly"
 
 const verificationModule = {
 	name: "verification",
@@ -15,6 +17,22 @@ const verificationModule = {
 export namespace Verification {
 	export function is(value: any | Pares): value is Pares {
 		return VerificationError.is(value) && typeof value.content.details.data?.pareq == "string"
+	}
+	export async function generateNotificationUrl(merchant: model.Merchant & authly.Payload, token: authly.Token) {
+		const card: model.Card.Token | model.Card.V1.Token | undefined =
+			(await model.Card.Token.verify(token)) ?? (await model.Card.V1.Token.verify(token))
+		return model.Card.Token.is(card)
+			? merchant.card.url +
+					"/card/" +
+					(card
+						? card.encrypted + card.expires[0].toString().padStart(2, "0") + card.expires[1].toString().padStart(2, "0")
+						: token) +
+					"/verification?mode=show"
+			: merchant.card.url +
+					"/card/" +
+					(card?.card ?? token) +
+					"/verification?mode=show&merchant=" +
+					(merchant.card.id ?? merchant.sub)
 	}
 	export type Error = VerificationError
 	export namespace Error {
