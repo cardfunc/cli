@@ -8,7 +8,7 @@ export async function create(
 	connection: Connection,
 	card: cardModel.Card.Creatable
 ): Promise<authly.Token | gracely.Error> {
-	return connection.post<authly.Token>("public", "card", card)
+	return await connection.post<authly.Token>("public", "card", card)
 }
 export namespace create {
 	export const command: paramly.Command<Connection> = {

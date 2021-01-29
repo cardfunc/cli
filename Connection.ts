@@ -120,7 +120,7 @@ export class Connection {
 			storage = Server.Storage.open(storage)
 		if (typeof server == "string")
 			server = await storage.load(server)
-		const payfuncKey = server && (await authly.Verifier.create("public").verify(server.keys.public))
+		const payfuncKey = server && (await authly.Verifier.create().verify(server.keys.public, "public"))
 		return new Connection(
 			storage,
 			server,

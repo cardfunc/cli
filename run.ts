@@ -29,7 +29,10 @@ export const application = new paramly.Application(
 	async f => cli.Connection.create("payfunc-card", (f.s ?? f.server)?.[0] ?? "default", (f.u ?? f.url)?.[0])
 )
 application.register(cli.Card.module, "card", "c")
-application.register(cli.Pares.module, "pares", "p")
+application.register(cli.Verification.module, "verification", "v")
+application.register(cli.Verification.Pares.module, "pares", "p")
+application.register(cli.Verification.Method.module, "method", "m")
+application.register(cli.Verification.Challenge.module, "challenge", "ch")
 application.register(cli.Server.module, "server", "s")
 application.register(cli.Test.module, "test", "t")
 

@@ -59,7 +59,7 @@
  "dependencies": {
   "@payfunc/model-card": "0.1.10",
   "@types/dotenv": "^8.2.0",
-  "authly": "0.0.40",
+  "authly": "0.1.7",
   "dotenv": "^8.2.0",
   "gracely": "0.0.33",
   "isoly": "0.0.15",
