@@ -6,6 +6,7 @@ import * as authly from "authly"
 import * as model from "@payfunc/model-card"
 import { default as fetch } from "node-fetch"
 import * as querystring from "querystring"
+import { Verification } from "../index"
 
 export async function get(
 	request: { url: string; transactionId: string; acsTransactionID: string } | Challenge,
@@ -42,12 +43,8 @@ export async function get(
 			challengeStatus: "pass",
 		})
 	)?.cres
-	const challengeNotificationUrl =
-		merchant.card.url.endsWith("7082") || merchant.card.url.endsWith("cardfunc.com")
-			? merchant.card.url + "/card/" + token + "/verification?mode=show&merchant=" + (merchant.card.id ?? merchant.sub)
-			: merchant.card.url + "/card/" + token + "/verification?mode=show"
 	const cardToken = challengeResponse
-		? await fetch(challengeNotificationUrl, {
+		? await fetch(await Verification.generateNotificationUrl(merchant, token), {
 				body: querystring.encode({ cres: challengeResponse }),
 				method: "POST",
 				headers: { "content-type": "application/x-www-form-urlencoded" },
