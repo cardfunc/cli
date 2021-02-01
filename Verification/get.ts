@@ -9,15 +9,15 @@ import * as model from "@payfunc/model-card"
 
 export async function get(
 	request: VerificationError | { url: string; [property: string]: string | undefined },
-	merchant?: model.Merchant & authly.Payload,
-	cardToken?: authly.Token
+	merchant: model.Merchant & authly.Payload,
+	cardToken: authly.Token
 ): Promise<string | undefined> {
 	let result: string | undefined
 	if (Pares.is(request))
-		result = await Pares.get(request)
-	else if (Method.is(request) && merchant && cardToken)
+		result = await Pares.get(request, merchant, cardToken)
+	else if (Method.is(request))
 		result = await Method.get(request, merchant, cardToken)
-	else if (Challenge.is(request) && merchant && cardToken)
+	else if (Challenge.is(request))
 		result = await Challenge.get(request, merchant, cardToken)
 	return result
 }
@@ -28,7 +28,7 @@ export namespace get {
 		description: "Performs 3D. Only works with 3D simulator.",
 		examples: [
 			[
-				"<url> <pareq> | <url> <transactionId> <cardToken> | <url> <transactionId> <acsTransactionId> <cardToken>",
+				"<url> <cardToken> <pareq> | <url> <cardToken> <transactionId> | <url> <cardToken> <transactionId> <acsTransactionId>",
 				"Perform 3D for given URL and PaReq.",
 			],
 		],
@@ -38,15 +38,15 @@ export namespace get {
 				"public"
 			)
 			const result = merchant
-				? argument.length == 2
-					? await get({ url: argument[0], pareq: argument[1] })
-					: argument.length == 3
-					? await get({ url: argument[0], transactionId: argument[1] }, merchant, argument[2])
+				? argument.length == 3
+					? argument[2].match(/^\w{8}-\w{4}-/)
+						? await get({ url: argument[0], transactionId: argument[2] }, merchant, argument[1])
+						: await get({ url: argument[0], pareq: argument[2] }, merchant, argument[1])
 					: argument.length == 4
 					? await get(
-							{ url: argument[0], transactionId: argument[1], ascTransactionId: argument[2] },
+							{ url: argument[0], transactionId: argument[2], ascTransactionId: argument[3] },
 							merchant,
-							argument[3]
+							argument[1]
 					  )
 					: undefined
 				: undefined
