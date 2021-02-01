@@ -1,6 +1,7 @@
 import * as paramly from "paramly"
 import * as authly from "authly"
 import { Pares } from "./index"
+import { default as fetch } from "node-fetch"
 import { Connection } from "../../Connection"
 import * as utility from "../../utility"
 import { Verification } from "../index"
