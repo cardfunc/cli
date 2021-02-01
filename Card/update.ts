@@ -1,6 +1,6 @@
-import * as authly from "authly"
 import * as gracely from "gracely"
 import * as paramly from "paramly"
+import * as authly from "authly"
 import * as cardModel from "@payfunc/model-card"
 import { Connection } from "../Connection"
 

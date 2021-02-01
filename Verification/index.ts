@@ -1,10 +1,10 @@
-import { get as verificationGet } from "./get"
-import { Error as VerificationError } from "./Error"
-import { Pares as VerificationPares } from "./Pares"
-import { Method as VerificationMethod } from "./Method"
-import { Challenge as VerificationChallenge } from "./Challenge"
-import * as model from "@payfunc/model-card"
 import * as authly from "authly"
+import * as model from "@payfunc/model-card"
+import { Challenge as VerificationChallenge } from "./Challenge"
+import { Error as VerificationError } from "./Error"
+import { get as verificationGet } from "./get"
+import { Method as VerificationMethod } from "./Method"
+import { Pares as VerificationPares } from "./Pares"
 
 const verificationModule = {
 	name: "verification",

@@ -1,11 +1,11 @@
-import * as authly from "authly"
 import * as paramly from "paramly"
-import { Connection } from "../Connection"
-import { Error as VerificationError } from "./Error"
-import { Pares } from "./Pares"
-import { Method } from "./Method"
-import { Challenge } from "./Challenge"
+import * as authly from "authly"
 import * as model from "@payfunc/model-card"
+import { Connection } from "../Connection"
+import { Challenge } from "./Challenge"
+import { Error as VerificationError } from "./Error"
+import { Method } from "./Method"
+import { Pares } from "./Pares"
 
 export async function get(
 	request: VerificationError | { url: string; [property: string]: string | undefined },
