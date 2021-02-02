@@ -58,7 +58,7 @@ export namespace get {
 		name: "get",
 		description: "Performs challenge 3D. Only works with 3D simulator.",
 		examples: [
-			["<url> <transactionId> <acsTransID> <cardToken>", "Perform challenge 3D for given URL and transactionId."],
+			["<url> <cardToken> <transactionId> <acsTransID>", "Perform challenge 3D for given URL and transactionId."],
 		],
 		execute: async (connection, argument, flags) => {
 			const merchant = await authly.Verifier.create<model.Merchant>().verify(
@@ -68,9 +68,9 @@ export namespace get {
 			const result =
 				merchant && argument.length > 3
 					? await get(
-							{ url: argument[0], transactionId: argument[1], acsTransactionID: argument[2] },
+							{ url: argument[0], transactionId: argument[2], acsTransactionID: argument[3] },
 							merchant,
-							argument[3]
+							argument[1]
 					  )
 					: undefined
 			console.info(result)

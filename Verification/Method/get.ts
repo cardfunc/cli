@@ -49,7 +49,7 @@ export namespace get {
 	export const command: paramly.Command<Connection> = {
 		name: "get",
 		description: "Performs method 3D. Only works with 3D simulator.",
-		examples: [["<url> <transactionId>", "Perform method 3D for given URL and transactionId."]],
+		examples: [["<url> <cardToken> <transactionId>", "Perform method 3D for given URL and transactionId."]],
 		execute: async (connection, argument, flags) => {
 			const merchant = await authly.Verifier.create<model.Merchant>().verify(
 				connection?.credentials?.keys.public,
@@ -57,7 +57,7 @@ export namespace get {
 			)
 			const result =
 				merchant && argument.length > 2
-					? await get({ url: argument[0], transactionId: argument[1] }, merchant, argument[2])
+					? await get({ url: argument[0], transactionId: argument[2] }, merchant, argument[1])
 					: undefined
 			console.info(result)
 			return !!result
