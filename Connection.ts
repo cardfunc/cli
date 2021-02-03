@@ -1,7 +1,7 @@
-import { default as fetch, RequestInit } from "node-fetch"
-import * as authly from "authly"
 import * as gracely from "gracely"
+import * as authly from "authly"
 import * as cardModel from "@payfunc/model-card"
+import { default as fetch, RequestInit } from "node-fetch"
 import * as Server from "./Server"
 
 export class Connection {

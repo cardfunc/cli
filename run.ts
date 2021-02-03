@@ -3,8 +3,8 @@ import * as dotenv from "dotenv"
 dotenv.config()
 
 import * as paramly from "paramly"
-import * as configuration from "./package.json"
 import * as cli from "./index"
+import * as configuration from "./package.json"
 
 export const application = new paramly.Application(
 	"PayFunc Card Tokenizing CLI",

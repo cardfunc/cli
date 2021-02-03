@@ -1,12 +1,12 @@
 import * as paramly from "paramly"
-import { Method } from "./index"
-import { Connection } from "../../Connection"
-import * as utility from "../../utility"
 import * as authly from "authly"
 import * as model from "@payfunc/model-card"
 import { default as fetch } from "node-fetch"
 import * as querystring from "querystring"
+import { Connection } from "../../Connection"
+import * as utility from "../../utility"
 import { Verification } from "../index"
+import { Method } from "./index"
 
 export async function get(
 	request: { url: string; transactionId: string } | Method,

@@ -1,5 +1,5 @@
-import * as authly from "authly"
 import * as paramly from "paramly"
+import * as authly from "authly"
 import { Connection } from "../Connection"
 import { Credentials } from "./Credentials"
 

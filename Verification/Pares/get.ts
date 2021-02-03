@@ -1,12 +1,12 @@
 import * as paramly from "paramly"
 import * as authly from "authly"
-import { Pares } from "./index"
+import * as model from "@payfunc/model-card"
 import { default as fetch } from "node-fetch"
+import * as querystring from "querystring"
 import { Connection } from "../../Connection"
 import * as utility from "../../utility"
 import { Verification } from "../index"
-import * as model from "@payfunc/model-card"
-import * as querystring from "querystring"
+import { Pares } from "./index"
 
 export async function get(
 	request: { url: string; pareq: string } | Pares,

@@ -1,8 +1,8 @@
-import { Credentials } from "./Credentials"
-import { Storage } from "./Storage"
 import { add } from "./add"
+import { Credentials } from "./Credentials"
 import { list } from "./list"
 import { remove } from "./remove"
+import { Storage } from "./Storage"
 
 const serverModule = {
 	name: "server",
