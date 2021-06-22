@@ -27,8 +27,7 @@ export async function get(
 			messageType: "CReq",
 			challengeWindowSize: "01",
 		}),
-		"url",
-		"="
+		"url"
 	)
 	const dialog3d = await utility.postForm(
 		request.url,

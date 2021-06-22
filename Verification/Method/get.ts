@@ -24,8 +24,7 @@ export async function get(
 			threeDSServerTransID: request.transactionId,
 			threeDSMethodNotificationURL: methodNotificationUrl,
 		}),
-		"url",
-		"="
+		"url"
 	)
 	await utility.postForm(request.url, {
 		threeDSMethodData: methodRequest,
@@ -34,8 +33,7 @@ export async function get(
 		JSON.stringify({
 			threeDSServerTransID: request.transactionId,
 		}),
-		"url",
-		"="
+		"url"
 	)
 	const cardToken = await fetch(methodNotificationUrl, {
 		body: querystring.encode({ threeDSMethodData: methodResponse }),
