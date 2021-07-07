@@ -14,15 +14,20 @@ export class Storage {
 		return !!((await this.initialized) && (await this.backend.setItem(merchant.name, merchant))).file
 	}
 	async load(name: string): Promise<Credentials | undefined> {
-		return name == "env"
+		const envName: string | undefined = name.startsWith("env") ? name.substring(3, name.length) : undefined
+		return (envName != undefined && process.env["privateKey" + envName] && process.env["publicKey" + envName]) ||
+			name == "env"
 			? {
-					name: "env",
+					name,
 					keys: {
-						private: process.env.privateKey ?? undefined,
-						public: process.env.publicKey ?? undefined,
-						agent: process.env.agentKey ?? undefined,
+						private: process.env["privateKey" + envName] ?? undefined,
+						public: process.env["publicKey" + envName] ?? undefined,
+						agent: process.env["agentKey" + envName] ?? undefined,
 					},
-					administrator: { user: process.env.adminUser ?? undefined, password: process.env.adminPassword ?? undefined },
+					administrator: {
+						user: process.env["adminUser" + envName] ?? undefined,
+						password: process.env["adminPassword" + envName] ?? undefined,
+					},
 			  }
 			: (await this.initialized) && this.backend.getItem(name)
 	}
