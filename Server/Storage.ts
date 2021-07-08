@@ -14,9 +14,24 @@ export class Storage {
 		return !!((await this.initialized) && (await this.backend.setItem(merchant.name, merchant))).file
 	}
 	async load(name: string): Promise<Credentials | undefined> {
-		const envName: string | undefined = name.startsWith("env") ? name.substring(3, name.length) : undefined
-		return (envName != undefined && process.env["privateKey" + envName] && process.env["publicKey" + envName]) ||
-			name == "env"
+		const envName: string = name == "env" ? "" : name
+		const envCapitalized: string | undefined =
+			envName.length > 0 ? envName.substring(0, 1).toUpperCase() + envName.substring(1, envName.length) : undefined
+		const result =
+			this.checkEnv(name, envName) ??
+			this.checkEnv(name, envCapitalized) ??
+			((await this.initialized) && this.backend.getItem(name))
+		return result
+	}
+	async list(): Promise<string[]> {
+		return (await this.initialized) && this.backend.keys()
+	}
+	async remove(name: string): Promise<boolean> {
+		const result = (await this.initialized) && (await this.backend.removeItem(name))
+		return result.removed
+	}
+	private checkEnv(name: string, envName: string | undefined): Credentials | undefined {
+		return envName != undefined && process.env["privateKey" + envName] && process.env["publicKey" + envName]
 			? {
 					name,
 					keys: {
@@ -29,14 +44,7 @@ export class Storage {
 						password: process.env["adminPassword" + envName] ?? undefined,
 					},
 			  }
-			: (await this.initialized) && this.backend.getItem(name)
-	}
-	async list(): Promise<string[]> {
-		return (await this.initialized) && this.backend.keys()
-	}
-	async remove(name: string): Promise<boolean> {
-		const result = (await this.initialized) && (await this.backend.removeItem(name))
-		return result.removed
+			: undefined
 	}
 	private static opened: { [name: string]: Storage } = {}
 	static open(name: string): Storage {
