@@ -57,12 +57,12 @@
   "clean": "rm -rf dist node_modules coverage"
  },
  "dependencies": {
-  "@payfunc/model-card": "0.1.15",
+  "@payfunc/model-card": "0.1.22",
   "@types/dotenv": "^8.2.0",
   "authly": "0.1.7",
   "dotenv": "^8.2.0",
-  "gracely": "0.0.33",
-  "isoly": "0.0.15",
+  "gracely": "0.0.43",
+  "isoly": "0.0.33",
   "node-fetch": "^2.6.1",
   "node-persist": "^3.1.0",
   "open": "^7.0.4",
